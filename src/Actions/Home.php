@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Responders\ViewResponder;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class Home
 {
-    public function __invoke(): Response
+    /**
+     * @param ViewResponder $responder
+     * @return Response
+     * @Route("/", name="homepage")
+     */
+    public function __invoke(ViewResponder $responder): Response
     {
-        return new Response("Bienvenue");
+        return $responder('homepage.html.Twig', []);
     }
 }
