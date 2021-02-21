@@ -1,4 +1,10 @@
 # Project 6 for OpenClassrooms - PHP & Symfony Path
 
-- Design pattern in ADR instead of MCD
-- UML diagrams are inside _UML folder in de root
+UML diagrams are inside _UML folder in de root
+
+## Personal constraints on the project :
+- Using design pattern in ADR instead of MCD
+- Using the CSS Tailwind framework
+- Do not use the AbstractController
+- Using DTOs
+  
