@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
                     $slug,
                     $factory->sentence(80),
                     null,
-                    $factory->imageUrl()
+                    'https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300'
                 );
 
                 $trick->setCategory($cat);

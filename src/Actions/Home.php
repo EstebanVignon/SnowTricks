@@ -33,9 +33,9 @@ final class Home
     }
 
     /**
+     * @Route("/", name="homepage")
      * @param ViewResponder $responder
      * @return Response
-     * @Route("/", name="homepage")
      */
     public function __invoke(ViewResponder $responder): Response
     {

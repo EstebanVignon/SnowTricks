@@ -1,4 +1,5 @@
 {% set menu1 = 'Accueil' %}
+{% set menu1Link = path('homepage') %}
 {% set menu2 = "S'inscrire" %}
 {% set menu3 = "Se connecter" %}
 
@@ -8,49 +9,74 @@
 
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <!-- Mobile menu button-->
-                <button id="mobile-menu-icon" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-                    <svg id="mobile-menu-icon-svg-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                <button id="mobile-menu-icon" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                    <svg id="mobile-menu-icon-svg-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
-                    <svg id="mobile-menu-icon-svg-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <svg id="mobile-menu-icon-svg-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
 
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <img class="lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+                <img class="lg:block h-8 w-auto"
+                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
-                        <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">{{ menu1 }}</a>
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{{ menu2 }}</a>
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{{  menu3 }}</a>
+                        <a href="{{ menu1Link }}"
+                           class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">{{ menu1 }}</a>
+                        <a href="#"
+                           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{{ menu2 }}</a>
+                        <a href="#"
+                           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{{ menu3 }}</a>
                     </div>
                 </div>
             </div>
-                <!-- Profile dropdown -->
-                <div class="ml-3 relative">
-                    <div>
-                        <button class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                        </button>
-                    </div>
-                    <div id="user-menu-dropdown" class="invisible origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Mon compte</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se déconnecter</a>
-                    </div>
+            <!-- Profile dropdown -->
+            <div class="ml-3 relative">
+                <div>
+                    <button class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            id="user-menu" aria-haspopup="true">
+                        <img class="h-8 w-8 rounded-full"
+                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                             alt="">
+                    </button>
+                </div>
+                <div id="user-menu-dropdown"
+                     class="invisible origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        Mon compte
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        Se déconnecter
+                    </a>
+                    <button id="toggleBtn"
+                            class="ml-3 mb-2 bg-gray-800 text-white font-bold py-1 px-2 rounded">
+                        Switch Dark Mode
+                    </button>
                 </div>
             </div>
-
         </div>
+
+    </div>
     </div>
 
     <!-- Mobile menu -->
     <div class="sm:hidden hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu1 }}</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu2 }}</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu3 }}</a>
+            <a href="{{ menu1Link }}"
+               class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu1 }}</a>
+            <a href="#"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu2 }}</a>
+            <a href="#"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu3 }}</a>
         </div>
     </div>
 
