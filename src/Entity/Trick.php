@@ -31,7 +31,7 @@ final class Trick extends AbstractEntity
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
@@ -40,16 +40,14 @@ final class Trick extends AbstractEntity
      */
     private $mainPicture;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
+     */
+    private $category;
+
     public function getTitle(): ?string
     {
         return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getSlug(): ?string
@@ -57,23 +55,9 @@ final class Trick extends AbstractEntity
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -81,21 +65,43 @@ final class Trick extends AbstractEntity
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     public function getMainPicture(): ?string
     {
         return $this->mainPicture;
     }
 
-    public function setMainPicture(?string $mainPicture): self
+    public function getCategory(): ?Category
     {
+        return $this->category;
+    }
+
+    public function create(
+        string $title,
+        string $slug,
+        string $description,
+        ?\DateTimeInterface $updatedAt,
+        ?string $mainPicture): Trick
+    {
+        $this->title = $title;
+        $this->slug = $slug;
+        $this->description = $description;
+        $this->updatedAt = $updatedAt;
         $this->mainPicture = $mainPicture;
+
+        return $this;
+    }
+
+    public function updateTitle(string $title): Trick
+    {
+        $this->title = $title;
+        $this->updatedAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
