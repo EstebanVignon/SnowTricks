@@ -41,7 +41,6 @@ class AppFixtures extends Fixture
 
                 $trick->create(
                     $title,
-                    $slug,
                     $factory->sentence(80),
                     null,
                     'https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300'

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">{{ trick.title }}</h1>
+
+    <div class="py-12 my-12 bg-white dark:bg-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <nav class="bg-gray-200 dark:bg-gray-900 dark:text-white max-w-3xl p-3 rounded w-full m-4">
+                <ol class="list-reset flex text-grey-dark">
+                    <li>
+                        <a href="{{ path('homepage') }}" class="text-blue font-bold">Accueil</a>
+                    </li>
+                    <li><span class="mx-2">/</span></li>
+                    <li>
+                        <a href="{{ path('trick_category', {'slug': trick.category.slug}) }}"
+                           class="text-blue font-bold">{{ trick.category.name }}</a>
+                    </li>
+                    <li><span class="mx-2">/</span></li>
+                    <li>{{ trick.title }}</li>
+                </ol>
+            </nav>
+            {{ dump(trick) }}
+
+            <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

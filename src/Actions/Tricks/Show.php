@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ShowATrick
+final class Show
 {
     /**
      * @var TrickRepository
@@ -38,7 +38,7 @@ final class ShowATrick
             throw new NotFoundHttpException('This trick does not exist');
         }
 
-        return $responder('tricks/show-single.html.twig', [
+        return $responder('trick/single.html.twig', [
             'trick' => $trick
         ]);
     }

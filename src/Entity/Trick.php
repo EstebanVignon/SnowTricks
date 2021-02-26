@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\TrickRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * Class Trick
@@ -77,13 +78,13 @@ final class Trick extends AbstractEntity
 
     public function create(
         string $title,
-        string $slug,
         string $description,
         ?\DateTimeInterface $updatedAt,
         ?string $mainPicture): Trick
     {
         $this->title = $title;
-        $this->slug = $slug;
+        $slugger = new AsciiSlugger();
+        $this->slug = strtolower($slugger->slug($this->title));
         $this->description = $description;
         $this->updatedAt = $updatedAt;
         $this->mainPicture = $mainPicture;
