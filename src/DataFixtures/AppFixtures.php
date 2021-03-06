@@ -37,12 +37,10 @@ class AppFixtures extends Fixture
 
                 $trick = new Trick();
                 $title = "Trick " . $factory->sentence(6);
-                $slug = strtolower($this->slugger->slug($title));
 
                 $trick->create(
                     $title,
                     $factory->sentence(80),
-                    null,
                     'https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300'
                 );
 

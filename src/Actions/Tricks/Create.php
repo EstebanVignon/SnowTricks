@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\Tricks;
 
-use App\Entity\Category;
+use App\Entity\Trick;
+use App\Form\Trick\TrickCreationFormType;
 use App\Repository\CategoryRepository;
 use App\Responders\ViewResponder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,50 +26,44 @@ final class Create
      */
     private $categoryRepository;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
     public function __construct(
         FormFactoryInterface $formFactory,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        EntityManagerInterface $em
     )
     {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
+        $this->em = $em;
     }
 
     /**
      * @Route("/trick/create", name="create_trick")
      * @param ViewResponder $responder
+     * @param Request $request
      * @return Response
      */
-    public function __invoke(ViewResponder $responder): Response
+    public function __invoke(ViewResponder $responder, Request $request): Response
     {
-        $builder = $this->formFactory->createBuilder();
+        $builder = $this->formFactory->createBuilder(TrickCreationFormType::class);
+        $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        $builder->add('title', TextType::class, [
-            'label' => 'Titre',
-            'attr' => [
-                'placeholder' => 'Tapez le titre'
-            ]
-        ])
-            ->add('description', TextareaType::class)
-            ->add('mainPicture', TextType::class)
-            ->add('category', EntityType::class, [
-                'label' => 'Catégorie',
-                'placeholder' => 'Choisir une catégorie',
-                'class' => Category::class,
-                'query_builder' => function (CategoryRepository $cr) {
-                    return $cr->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-            ]);
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $trick = new Trick();
+            $trick->create($data->title, $data->description, $data->mainPicture);
+            $trick->setCategory($data->category);
+            $this->em->persist($trick);
+            $this->em->flush();
+        }
 
-        $builder->setMethod('GET')
-            ->setAction('');
-
-
-        $formBuilder = $builder->getForm();
-        $formView = $formBuilder->createView();
+        $formView = $form->createView();
 
         return $responder('trick/create.html.twig', [
             'formView' => $formView

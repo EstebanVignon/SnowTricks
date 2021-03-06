@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * Class Trick
@@ -79,14 +79,13 @@ final class Trick extends AbstractEntity
     public function create(
         string $title,
         string $description,
-        ?\DateTimeInterface $updatedAt,
         ?string $mainPicture): Trick
     {
         $this->title = $title;
-        $slugger = new AsciiSlugger();
-        $this->slug = strtolower($slugger->slug($this->title));
+        $slugger = new Slugify();
+        $this->slug = $slugger->slugify($title);
         $this->description = $description;
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = null;
         $this->mainPicture = $mainPicture;
 
         return $this;
