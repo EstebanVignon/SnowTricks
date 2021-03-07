@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Actions\Tricks;
 
 use App\Entity\Trick;
-use App\Form\Trick\TrickCreateDTO;
 use App\Form\Trick\TrickCreateType;
+use App\Form\Trick\TrickEditDTO;
+use App\Form\Trick\TrickEditType;
 use App\Repository\CategoryRepository;
+use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class Create
+final class Edit
 {
     /**
      * @var FormFactoryInterface
@@ -31,31 +35,45 @@ final class Create
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var TrickRepository
+     */
+    private $trickRepository;
 
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        TrickRepository $trickRepository
     )
     {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
+        $this->trickRepository = $trickRepository;
     }
 
     /**
-     * @Route("/trick/create", name="create_trick")
+     * @Route("/trick/{id}/edit", name="edit_trick")
+     * @param string $id
      * @param ViewResponder $responder
      * @param Request $request
      * @return Response
      */
-    public function __invoke(ViewResponder $responder, Request $request): Response
+    public function __invoke(string $id, ViewResponder $responder, Request $request): Response
     {
-        $form = $this->formFactory->createBuilder(TrickCreateType::class)->getForm()->handleRequest($request);
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
 
-        if ($form->isSubmitted()) {
+        if (!$trick) {
+            throw new NotFoundHttpException("Trick not found");
+        }
+
+        $dto = TrickEditDTO::createFromEntity($trick);
+
+        $form = $this->formFactory->createBuilder(TrickEditType::class, $dto)->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $trick = new Trick();
             $trick->create($data->title, $data->description, $data->mainPicture);
             $trick->setCategory($data->category);
             $this->em->persist($trick);
@@ -64,8 +82,9 @@ final class Create
 
         $formView = $form->createView();
 
-        return $responder('trick/create.html.twig', [
-            'formView' => $formView
+        return $responder('trick/edit.html.twig', [
+            'formView' => $formView,
+            'trick' => $trick
         ]);
     }
 }

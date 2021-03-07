@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de {{ trick.title }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Editer le trick : {{ trick.title }}</h1>
+
+    <div class="py-12 my-12 bg-white dark:bg-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{ form_start(formView) }}
+            {{ form_errors(formView) }}
+            <div class="md:flex">
+                <div class="md:w-1/2 w-full px-5">
+                    {{ form_row(formView.title) }}
+                    {{ form_row(formView.description) }}
+                </div>
+                <div class="md:w-1/2 w-full px-5">
+                    {{ form_row(formView.mainPicture) }}
+                    {{ form_row(formView.category) }}
+                </div>
+            </div>
+
+            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1" type="submit">Sauvegarder</button>
+            {{ form_end(formView) }}
+        </div>
+    </div>
+
+{% endblock %}
+

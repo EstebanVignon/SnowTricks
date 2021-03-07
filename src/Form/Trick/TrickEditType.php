@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TrickCreationFormType extends AbstractType
+class TrickEditType extends AbstractType
 {
 
     /**
@@ -26,7 +26,6 @@ class TrickCreationFormType extends AbstractType
     {
         $this->categoryRepository = $categoryRepository;
     }
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -61,7 +60,7 @@ class TrickCreationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => TrickCreationFormModel::class
+            'data_class' => TrickEditDTO::class
         ]);
     }
 }
