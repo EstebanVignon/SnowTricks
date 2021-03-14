@@ -15,7 +15,7 @@ final class Category
     /**
      * @var CategoryRepository
      */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository

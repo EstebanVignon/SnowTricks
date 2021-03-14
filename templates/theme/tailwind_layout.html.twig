@@ -394,7 +394,7 @@ HELP
     {%- endif -%}
     <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_label(form) -}}
-        {{- form_errors(form) -}}
+        <span class="text-red-500 font-bold">{{- form_errors(form) -}}</span>
         {{- form_widget(form, widget_attr) -}}
         {{- form_help(form) -}}
     </div>

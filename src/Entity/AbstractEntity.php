@@ -11,12 +11,12 @@ abstract class AbstractEntity
      * @ORM\Id()
      * @ORM\Column(type="string")
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    protected \DateTime $createdAt;
 
     public function __construct()
     {

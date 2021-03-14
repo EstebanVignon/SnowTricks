@@ -4,7 +4,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cocur/slugify": "^4.0",
@@ -27,6 +27,7 @@
         "symfony/stopwatch": "5.2.*",
         "symfony/string": "5.2.*",
         "symfony/twig-bundle": "5.2.*",
+        "symfony/validator": "5.2.*",
         "symfony/var-dumper": "5.2.*",
         "symfony/web-profiler-bundle": "5.2.*",
         "symfony/webpack-encore-bundle": "^1.11",

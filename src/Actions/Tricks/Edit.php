@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Tricks;
 
-use App\Entity\Trick;
-use App\Form\Trick\TrickCreateType;
 use App\Form\Trick\TrickEditDTO;
 use App\Form\Trick\TrickEditType;
 use App\Repository\CategoryRepository;
@@ -13,56 +11,65 @@ use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class Edit
 {
     /**
      * @var FormFactoryInterface
      */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     /**
      * @var CategoryRepository
      */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
+
     /**
      * @var TrickRepository
      */
-    private $trickRepository;
+    private TrickRepository $trickRepository;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em,
-        TrickRepository $trickRepository
+        TrickRepository $trickRepository,
+        UrlGeneratorInterface $urlGenerator
     )
     {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
         $this->trickRepository = $trickRepository;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
-     * @Route("/trick/{id}/edit", name="edit_trick")
-     * @param string $id
+     * @Route("/trick/edit/{slug}", name="edit_trick")
+     * @param string $slug
      * @param ViewResponder $responder
      * @param Request $request
      * @return Response
      */
-    public function __invoke(string $id, ViewResponder $responder, Request $request): Response
+    public function __invoke(string $slug, ViewResponder $responder, Request $request): Response
     {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
 
         if (!$trick) {
             throw new NotFoundHttpException("Trick not found");
@@ -74,10 +81,13 @@ final class Edit
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $trick->create($data->title, $data->description, $data->mainPicture);
+            $trick->update($data->title, $data->description, $data->mainPicture);
             $trick->setCategory($data->category);
             $this->em->persist($trick);
             $this->em->flush();
+
+            $url = $this->urlGenerator->generate('show_trick', ['slug' => $trick->getSlug()]);
+            return new RedirectResponse($url);
         }
 
         $formView = $form->createView();

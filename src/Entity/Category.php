@@ -7,6 +7,7 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,17 +20,17 @@ class Category extends AbstractEntity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="category")
      */
-    private $tricks;
+    private PersistentCollection $tricks;
 
     public function __construct(
     )

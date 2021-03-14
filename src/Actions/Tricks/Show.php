@@ -15,7 +15,7 @@ final class Show
     /**
      * @var TrickRepository
      */
-    private $repository;
+    private TrickRepository $repository;
 
     public function __construct(
         TrickRepository $repository
@@ -25,7 +25,7 @@ final class Show
     }
 
     /**
-     * @Route("/trick/{slug}", name="show_trick")
+     * @Route("/trick/show/{slug}", name="show_trick")
      * @param $slug
      * @param ViewResponder $responder
      * @return Response

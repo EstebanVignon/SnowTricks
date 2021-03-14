@@ -14,7 +14,7 @@ class AppFixtures extends Fixture
     /**
      * @var SluggerInterface
      */
-    private $slugger;
+    private SluggerInterface $slugger;
 
     public function __construct(
         SluggerInterface $slugger

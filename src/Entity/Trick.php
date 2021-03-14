@@ -19,32 +19,32 @@ final class Trick extends AbstractEntity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private \DateTime $updatedAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $mainPicture;
+    private string $mainPicture;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      */
-    private $category;
+    private Category $category;
 
     public function getTitle(): ?string
     {
@@ -86,6 +86,21 @@ final class Trick extends AbstractEntity
         $this->slug = $slugger->slugify($title);
         $this->description = $description;
         $this->updatedAt = null;
+        $this->mainPicture = $mainPicture;
+
+        return $this;
+    }
+
+    public function update(
+        string $title,
+        string $description,
+        ?string $mainPicture): Trick
+    {
+        $this->title = $title;
+        $slugger = new Slugify();
+        $this->slug = $slugger->slugify($title);
+        $this->description = $description;
+        $this->updatedAt = new \DateTime('now');
         $this->mainPicture = $mainPicture;
 
         return $this;

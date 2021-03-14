@@ -16,12 +16,12 @@ final class Home
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * @var TrickRepository
      */
-    private $repository;
+    private TrickRepository $repository;
 
     public function __construct(
         EntityManagerInterface $em,
