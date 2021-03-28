@@ -25,8 +25,8 @@
             </div>
 
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <img class="lg:block h-8 w-auto"
-                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+                {# <img class="lg:block h-8 w-auto" #}
+                {# src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow"> #}
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
                         <a href="{{ menu1Link }}"
@@ -41,11 +41,15 @@
             <!-- Profile dropdown -->
             <div class="ml-3 relative">
                 <div>
-                    <button class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    {# <button class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" #}
+                    {# id="user-menu" aria-haspopup="true"> #}
+                    {# <img class="h-8 w-8 rounded-full" #}
+                    {# src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" #}
+                    {# alt=""> #}
+                    {# </button> #}
+                    <button class="bg-gray-100 flex text-lg font-bold rounded px-2 py-1"
                             id="user-menu" aria-haspopup="true">
-                        <img class="h-8 w-8 rounded-full"
-                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                             alt="">
+                        <span>Compte</span>
                     </button>
                 </div>
                 <div id="user-menu-dropdown"

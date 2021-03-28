@@ -19,8 +19,7 @@ final class Show
 
     public function __construct(
         TrickRepository $repository
-    )
-    {
+    ) {
         $this->repository = $repository;
     }
 

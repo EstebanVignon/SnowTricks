@@ -2,6 +2,8 @@
 
 {% block body %}
 
+    {% include 'shared/_flash.html.twig' %}
+
     <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">{{ trick.title }}</h1>
 
     <div class="py-12 my-12 bg-white dark:bg-gray-700">
@@ -19,9 +21,16 @@
                     </li>
                     <li><span class="mx-2">/</span></li>
                     <li>{{ trick.title }}</li>
+
                 </ol>
             </nav>
             {{ dump(trick) }}
+
+            <div>
+                {% for video in trick.videos %}
+                    {{ video.link }}<br>
+                {% endfor %}
+            </div>
 
             <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
             </div>

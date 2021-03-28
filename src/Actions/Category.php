@@ -19,13 +19,12 @@ final class Category
 
     public function __construct(
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
     }
 
     /**
-     * @Route("/{slug}", name="trick_category")
+     * @Route("/trick/category/{slug}", name="trick_category")
      * @param $slug
      * @param ViewResponder $responder
      * @return Response
@@ -43,5 +42,4 @@ final class Category
             'category' => $category
         ]);
     }
-
 }

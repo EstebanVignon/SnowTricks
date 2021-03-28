@@ -6,5 +6,4 @@ UML diagrams are inside _UML folder in de root
 - Using design pattern in ADR instead of MVC
 - Using the CSS Tailwind framework
 - Do not use the AbstractController
-- Using DTOs
   

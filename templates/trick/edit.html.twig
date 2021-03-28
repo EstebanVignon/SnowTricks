@@ -1,30 +1,118 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form _self %}
+
 {% block title %}Edition de {{ trick.title }}{% endblock %}
 
 {% block body %}
 
-    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Editer le trick : {{ trick.title }}</h1>
+    {% include 'shared/_flash.html.twig' %}
+
+    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Editer le trick
+        : {{ trick.title }}</h1>
 
     <div class="py-12 my-12 bg-white dark:bg-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{ form_start(formView) }}
-            {{ form_errors(formView) }}
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
             <div class="md:flex">
                 <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(formView.title) }}
-                    {{ form_row(formView.description) }}
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description) }}
                 </div>
                 <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(formView.mainPicture) }}
-                    {{ form_row(formView.category) }}
+                    {{ form_row(form.mainPicture) }}
+                    {{ form_row(form.category) }}
                 </div>
             </div>
 
-            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1" type="submit">Sauvegarder</button>
-            {{ form_end(formView) }}
+            <div class="px-5">
+                {{ form_row(form.videos) }}
+            </div>
+
+            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                    type="submit">Sauvegarder
+            </button>
+
+            {{ form_end(form) }}
+
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.getElementById('add-another-collection-widget').addEventListener('click', function () {
+                let parent = document.getElementById('trick_edit_videos');
+                const widgetsCounter = document.getElementById('widgets-counter');
+                let index = widgetsCounter.value;
+                let template = parent.dataset.prototype.replace(/__name__/g, index);
+                $(parent).append(template); //JQUERY
+                widgetsCounter.value = parseInt(index) + 1;
+                handleDeleteBtn();
+            });
+        })
+
+        function handleDeleteBtn() {
+            let buttons = document.querySelectorAll('button[data-action="delete"]');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function () {
+                    const target = this.dataset.target;
+                    document.getElementById(target).remove();
+                })
+            }
+        }
+
+        function updateWidgetsCounter() {
+            const elements = document.querySelectorAll('#trick_edit_videos > div');
+            const widgetsCounter = document.getElementById('widgets-counter');
+            widgetsCounter.value = elements.length;
+        }
+
+        updateWidgetsCounter();
+
+        handleDeleteBtn();
+    </script>
+
 {% endblock %}
+
+
+{% block _trick_edit_videos_entry_widget %}
+
+    <div id="block_{{ id }}" class="w-full md:w-1/2 px-0 md:px-5">
+        <div class="flex items-baseline">
+            <div class="w-full">
+                {{ form_widget(form) }}
+            </div>
+            <button type="button"
+                    data-action="delete"
+                    data-target="block_{{ id }}"
+                    class="ml-5 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
+            </button>
+        </div>
+
+        {# {% if value.link is defined %} #}
+        {# {{ value.link }} #}
+        {# {% endif %} #}
+
+    </div>
+{% endblock %}
+
+{% block _trick_edit_videos_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_edit_videos_widget %}
+    {{ form_widget(form, { 'attr': {'class': 'w-full md:flex flex-wrap'} }) }}
+
+    <input type="hidden" id="widgets-counter" value="0">
+
+    <button type="button"
+            id="add-another-collection-widget"
+            class="bg-blue-700 mt-5 text-white px-3 py-2 rounded-md"
+            data-list-selector="#email-fields-list">
+        Ajouter une video
+    </button>
+
+{% endblock %}
+
 

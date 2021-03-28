@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Trick;
+use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -28,23 +29,25 @@ class AppFixtures extends Fixture
         $factory = Factory::create('fr_FR');
 
         for ($c = 1; $c <= 3; $c++) {
-
             $cat = new Category();
             $cat->create("Catégorie $c");
             $manager->persist($cat);
 
             for ($i = 1; $i <= mt_rand(10, 25); $i++) {
-
                 $trick = new Trick();
                 $title = "Trick " . $factory->sentence(6);
+                $trick->setTitle($title)
+                    ->setDescription($factory->sentence(20))
+                    ->setMainPicture('https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300')
+                    ->setCategory($cat);
 
-                $trick->create(
-                    $title,
-                    $factory->sentence(80),
-                    'https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300'
-                );
+                for ($v = 1; $v <= 3; $v++) {
+                    $video = new Video();
+                    $video->setLink('https://www.youtube.com/watch?v=BHACKCNDMW8');
+                    $video->setTrick($trick);
 
-                $trick->setCategory($cat);
+                    $manager->persist($video);
+                }
 
                 $manager->persist($trick);
             }

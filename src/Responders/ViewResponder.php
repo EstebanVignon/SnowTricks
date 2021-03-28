@@ -16,8 +16,7 @@ class ViewResponder
 
     public function __construct(
         Environment $templating
-    )
-    {
+    ) {
         $this->templating = $templating;
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Tricks;
 
-use App\Form\Trick\TrickEditDTO;
 use App\Form\Trick\TrickEditType;
 use App\Repository\CategoryRepository;
 use App\Repository\TrickRepository;
@@ -14,6 +13,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -45,12 +45,18 @@ final class Edit
      */
     private UrlGeneratorInterface $urlGenerator;
 
+    /**
+     * @var FlashBagInterface
+     */
+    private FlashBagInterface $flash;
+
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em,
         TrickRepository $trickRepository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        FlashBagInterface $flash
     )
     {
         $this->formFactory = $formFactory;
@@ -58,6 +64,7 @@ final class Edit
         $this->em = $em;
         $this->trickRepository = $trickRepository;
         $this->urlGenerator = $urlGenerator;
+        $this->flash = $flash;
     }
 
     /**
@@ -75,25 +82,25 @@ final class Edit
             throw new NotFoundHttpException("Trick not found");
         }
 
-        $dto = TrickEditDTO::createFromEntity($trick);
-
-        $form = $this->formFactory->createBuilder(TrickEditType::class, $dto)->getForm()->handleRequest($request);
+        $form = $this->formFactory->createBuilder(TrickEditType::class, $trick)->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $trick->update($data->title, $data->description, $data->mainPicture);
-            $trick->setCategory($data->category);
-            $this->em->persist($trick);
+            $newTrick = $form->getData();
+            foreach ($newTrick->getVideos() as $video) {
+                $video->setTrick($newTrick);
+                $this->em->persist($video);
+            }
+            $this->em->persist($newTrick);
             $this->em->flush();
+
+            $this->flash->add('success', 'Le trick a bien été modifié');
 
             $url = $this->urlGenerator->generate('show_trick', ['slug' => $trick->getSlug()]);
             return new RedirectResponse($url);
         }
 
-        $formView = $form->createView();
-
         return $responder('trick/edit.html.twig', [
-            'formView' => $formView,
+            'form' => $form->createView(),
             'trick' => $trick
         ]);
     }

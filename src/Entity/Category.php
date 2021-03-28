@@ -7,9 +7,6 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
-use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -30,10 +27,9 @@ class Category extends AbstractEntity
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="category")
      */
-    private PersistentCollection $tricks;
+    private Collection $tricks;
 
-    public function __construct(
-    )
+    public function __construct()
     {
         parent::__construct();
         $this->tricks = new ArrayCollection();
@@ -44,9 +40,23 @@ class Category extends AbstractEntity
         return $this->name;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->name = $slug;
+
+        return $this;
     }
 
     /**
@@ -55,15 +65,6 @@ class Category extends AbstractEntity
     public function getTricks(): Collection
     {
         return $this->tricks;
-    }
-
-    public function create(string $name): self
-    {
-        $this->name = $name;
-        $slugger = new AsciiSlugger();
-        $this->slug = strtolower($slugger->slug($this->name));
-
-        return $this;
     }
 
     public function addTrick(Trick $trick): self
@@ -84,6 +85,17 @@ class Category extends AbstractEntity
                 $trick->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    // CUSTOM
+
+    public function create(string $name): self
+    {
+        $this->name = $name;
+        $slugger = new Slugify();
+        $this->slug = $slugger->slugify($this->getName());
 
         return $this;
     }
