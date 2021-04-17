@@ -4,10 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
@@ -17,16 +19,43 @@ class AppFixtures extends Fixture
      */
     private SluggerInterface $slugger;
 
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private UserPasswordEncoderInterface $encoder;
+
     public function __construct(
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        UserPasswordEncoderInterface $encoder
     )
     {
         $this->slugger = $slugger;
+        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
     {
         $factory = Factory::create('fr_FR');
+
+        $admin = new User();
+        $hash = $this->encoder->encodePassword($admin, 'Password');
+
+        $admin->setUsername('Esteban')
+            ->setEmail('vignon.esteban@gmail.com')
+            ->setPassword($hash)
+            ->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($admin);
+
+        for ($u = 0; $u < 5; $u++) {
+            $user = new User();
+            $hash = $this->encoder->encodePassword($user, 'Password');
+            $user->setUsername("User$u")
+                ->setEmail("usertest$u@gmail.com")
+                ->setPassword($hash);
+
+            $manager->persist($user);
+        }
 
         for ($c = 1; $c <= 3; $c++) {
             $cat = new Category();
