@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,6 +49,17 @@ class User extends AbstractEntity implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private bool $isActive;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TokenHistory::class, mappedBy="user")
+     */
+    private ?Collection $tokensHistory;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->tokensHistory = new ArrayCollection();
+    }
 
     /**
      * A visual identifier that represents this user.
@@ -131,6 +144,36 @@ class User extends AbstractEntity implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TokenHistory[]
+     */
+    public function getTokensHistory(): Collection
+    {
+        return $this->tokensHistory;
+    }
+
+    public function addTokensHistory(TokenHistory $tokensHistory): self
+    {
+        if (!$this->tokensHistory->contains($tokensHistory)) {
+            $this->tokensHistory[] = $tokensHistory;
+            $tokensHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTokensHistory(TokenHistory $tokensHistory): self
+    {
+        if ($this->tokensHistory->removeElement($tokensHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($tokensHistory->getUser() === $this) {
+                $tokensHistory->setUser(null);
+            }
+        }
 
         return $this;
     }

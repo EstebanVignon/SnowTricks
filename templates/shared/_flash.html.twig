@@ -9,3 +9,9 @@
         {{ message }}
     </div>
 {% endfor %}
+
+{% for message in app.flashes('fail') %}
+    <div class="bg-red-500 rounded text-xl text-center p-3 m-5">
+        {{ message }}
+    </div>
+{% endfor %}

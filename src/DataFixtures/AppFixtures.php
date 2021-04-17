@@ -3,12 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\TokenHistory;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -55,7 +57,13 @@ class AppFixtures extends Fixture
                 ->setPassword($hash)
                 ->setIsActive(false);
 
+            $token = new TokenHistory();
+            $token->setType('registration')
+                ->setValue(Uuid::uuid4()->toString())
+                ->setUser($user);
+
             $manager->persist($user);
+            $manager->persist($token);
         }
 
         for ($c = 1; $c <= 3; $c++) {
