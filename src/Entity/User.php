@@ -4,11 +4,15 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="esvi_user")
+ * @UniqueEntity(fields="username", message="Nom d'utilisateur déjà existant")
+ * @UniqueEntity(fields="email", message="Cet email existe déjà")
  */
 class User extends AbstractEntity implements UserInterface
 {
@@ -29,7 +33,8 @@ class User extends AbstractEntity implements UserInterface
     private string $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email(message="doit être un email")
      */
     private string $email;
 
@@ -37,6 +42,11 @@ class User extends AbstractEntity implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $avatar;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isActive;
 
     /**
      * A visual identifier that represents this user.
@@ -113,6 +123,18 @@ class User extends AbstractEntity implements UserInterface
         return $this;
     }
 
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
     /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
@@ -132,4 +154,5 @@ class User extends AbstractEntity implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
 }

@@ -37,22 +37,23 @@ class AppFixtures extends Fixture
     {
         $factory = Factory::create('fr_FR');
 
-        $admin = new User();
-        $hash = $this->encoder->encodePassword($admin, 'Password');
+        $activeUser = new User();
+        $hash = $this->encoder->encodePassword($activeUser, 'Password');
 
-        $admin->setUsername('Esteban')
+        $activeUser->setUsername('Esteban')
             ->setEmail('vignon.esteban@gmail.com')
             ->setPassword($hash)
-            ->setRoles(['ROLE_ADMIN']);
+            ->setIsActive(true);
 
-        $manager->persist($admin);
+        $manager->persist($activeUser);
 
         for ($u = 0; $u < 5; $u++) {
             $user = new User();
             $hash = $this->encoder->encodePassword($user, 'Password');
             $user->setUsername("User$u")
                 ->setEmail("usertest$u@gmail.com")
-                ->setPassword($hash);
+                ->setPassword($hash)
+                ->setIsActive(false);
 
             $manager->persist($user);
         }

@@ -5,6 +5,7 @@ namespace App\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,14 +25,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @var UrlGeneratorInterface
      */
     private UrlGeneratorInterface $urlGenerator;
+    /**
+     * @var FlashBagInterface
+     */
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         UserPasswordEncoderInterface $encoder,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        FlashBagInterface $flashBag
     )
     {
         $this->encoder = $encoder;
         $this->urlGenerator = $urlGenerator;
+        $this->flashBag = $flashBag;
     }
 
     public function supports(Request $request): bool
@@ -60,6 +67,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $isValid = $this->encoder->isPasswordValid($user, $credentials['password']);
         if (!$isValid) {
             throw new CustomUserMessageAuthenticationException('Identifiants invalides');
+        }
+
+        if (!$user->getIsActive()) {
+            $this->flashBag->add('warning', "Votre compte n'est pas actif, vérifiez votre boite mail");
+
+            throw new CustomUserMessageAuthenticationException("Compte non activé");
         }
         return true;
     }

@@ -3,3 +3,9 @@
         {{ message }}
     </div>
 {% endfor %}
+
+{% for message in app.flashes('warning') %}
+    <div class="bg-yellow-500 rounded text-xl text-center p-3 m-5">
+        {{ message }}
+    </div>
+{% endfor %}

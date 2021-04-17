@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Security;
 
 use App\Form\LoginType;
-use App\Form\Trick\TrickCreateType;
 use App\Responders\ViewResponder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;

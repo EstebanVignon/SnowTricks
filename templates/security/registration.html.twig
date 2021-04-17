@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}S'inscrire{% endblock %}
 
 {% block body %}
 
@@ -9,21 +9,15 @@
     <div class="py-12 my-12 bg-white dark:bg-gray-700">
         <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8">
 
-
-
-            <h1 class="mt-5 text-5xl dark:text-white text-center">Connexion</h1>
-
-            {% if error %}
-                <div class="mt-8 text-red-500">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
+            <h1 class="mt-5 text-5xl dark:text-white text-center">S'inscrire</h1>
             {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_row(form.username) }}
+            {{ form_row(form.email) }}
             {{ form_row(form.password) }}
 
             <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
-                    type="submit">Se connecter
+                    type="submit">S'inscrire
             </button>
         </div>
     </div>
