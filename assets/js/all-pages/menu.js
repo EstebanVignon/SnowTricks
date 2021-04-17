@@ -1,14 +1,4 @@
 //Profil Dropdown
-const userMenu = document.getElementById('user-menu');
-const userMenuDropdown = document.getElementById('user-menu-dropdown');
-
-userMenu.addEventListener('click', function () {
-    if (userMenuDropdown.classList.contains('invisible')) {
-        userMenuDropdown.classList.remove('invisible');
-    } else {
-        userMenuDropdown.classList.add('invisible');
-    }
-});
 
 //Main Menu
 const mobileMenu = document.getElementById('mobile-menu');
