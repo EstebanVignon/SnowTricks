@@ -27,6 +27,18 @@ class TokenHistory extends AbstractEntity
      */
     private ?User $user;
 
+    /**
+     * @param \DateTime $date
+     * @return $this
+     * ADD FOR DATA FIXTURE / SET OLD TOKEN FOR PURGE TESTING
+     */
+    public function setCreatedAt(\DateTime $date): self
+    {
+        $this->createdAt = $date;
+
+        return $this;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

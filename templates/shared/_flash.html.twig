@@ -15,3 +15,21 @@
         {{ message }}
     </div>
 {% endfor %}
+
+{% for message in app.flashes('warning-token') %}
+    <div class="bg-yellow-500 rounded text-xl text-center p-3 m-5">
+        {{ message.message }}<br>
+        <a href="{{ message.link }}">
+            <button class="bg-white text-black rounded-xl py-1 px-3 mt-5">Renvoyer un nouveau lien</button>
+        </a>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('warning-no-token') %}
+    <div class="bg-red-500 rounded text-xl text-center p-3 m-5">
+        {{ message.message }}<br>
+        <a href="{{ message.link }}">
+            <button class="bg-white text-black rounded-xl py-1 px-3 mt-5">Envoyer un nouveau lien</button>
+        </a>
+    </div>
+{% endfor %}

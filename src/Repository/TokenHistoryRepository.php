@@ -31,7 +31,6 @@ class TokenHistoryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     /*
     public function findOneBySomeField($value): ?TokenHistory
     {

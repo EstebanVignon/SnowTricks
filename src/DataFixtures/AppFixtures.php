@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($activeUser);
 
-        for ($u = 0; $u < 5; $u++) {
+        for ($u = 0; $u < 10; $u++) {
             $user = new User();
             $hash = $this->encoder->encodePassword($user, 'Password');
             $user->setUsername("User$u")
@@ -59,7 +59,8 @@ class AppFixtures extends Fixture
             $token = new TokenHistory();
             $token->setType('registration')
                 ->setValue(Uuid::uuid4()->toString())
-                ->setUser($user);
+                ->setUser($user)
+                ->setCreatedAt(new \DateTime('-' . $u . ' days'));
 
             $manager->persist($user);
             $manager->persist($token);
