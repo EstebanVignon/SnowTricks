@@ -1,5 +1,32 @@
-<h1>Confirmation de votre compte Snowtrick</h1>
+{% apply inline_css %}
+    <style>
+        {# here, define your CSS styles as usual #}
+        h1 {
+            color: #1b748c;
+            text-align: center;
+            font-family: sans-serif;
+        }
 
-<a href="{{ url('security_registration_token_validation', {'token' : token }) }}">
-    <button>Valider votre compte</button>
-</a>
+        button {
+            border: none;
+            border-radius: 10px;
+            background-color: #252525;
+            color: white;
+            font-size: 18px;
+            padding: 6px 12px;
+            margin: 30px auto 0 auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+
+    <h1>Confirmation de votre compte Snowtrick</h1>
+
+    <a href="{{ url('security_registration_token_validation', {'token' : token }) }}">
+        <button>Valider votre compte</button>
+    </a>
+{% endapply %}

@@ -54,8 +54,7 @@ class AppFixtures extends Fixture
             $hash = $this->encoder->encodePassword($user, 'Password');
             $user->setUsername("User$u")
                 ->setEmail("usertest$u@gmail.com")
-                ->setPassword($hash)
-                ->setIsActive(false);
+                ->setPassword($hash);
 
             $token = new TokenHistory();
             $token->setType('registration')

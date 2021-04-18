@@ -96,7 +96,6 @@ final class Registration
             $user->setPassword($hash);
 
             //TOKEN
-            $user->setIsActive(false); //set account inactive
             $token = new TokenHistory();
             $token->setType('registration')
                 ->setValue(Uuid::uuid4()->toString())

@@ -19,22 +19,18 @@ class TokenHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, TokenHistory::class);
     }
 
-    // /**
-    //  * @return TokenHistory[] Returns an array of TokenHistory objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return TokenHistory[] Returns an array of TokenHistory objects
+     */
+    public function findAllTokenOlderThanDaysNumber($days)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('t.createdAt < :days')
+            ->setParameter('days', new \DateTime('-' . $days . ' days'))
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?TokenHistory

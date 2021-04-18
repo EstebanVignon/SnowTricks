@@ -59,6 +59,7 @@ class User extends AbstractEntity implements UserInterface
     {
         parent::__construct();
         $this->tokensHistory = new ArrayCollection();
+        $this->setIsActive(false);
     }
 
     /**
