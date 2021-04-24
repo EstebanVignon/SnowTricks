@@ -29,11 +29,6 @@ class Registration
     private FormFactoryInterface $formFactory;
 
     /**
-     * @var AuthenticationUtils
-     */
-    private AuthenticationUtils $authenticationUtils;
-
-    /**
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
@@ -60,7 +55,6 @@ class Registration
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        AuthenticationUtils $authenticationUtils,
         EntityManagerInterface $em,
         FlashBagInterface $flash,
         UrlGeneratorInterface $urlGenerator,
@@ -68,7 +62,6 @@ class Registration
         MailerInterface $mailer
     ) {
         $this->formFactory = $formFactory;
-        $this->authenticationUtils = $authenticationUtils;
         $this->em = $em;
         $this->flash = $flash;
         $this->urlGenerator = $urlGenerator;
