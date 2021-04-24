@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class RegistrationTokenValidation
+class RegistrationTokenValidation
 {
     /**
      * @var FlashBagInterface
@@ -40,8 +40,7 @@ final class RegistrationTokenValidation
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         TokenHistoryRepository $tokenHistoryRepository
-    )
-    {
+    ) {
         $this->flash = $flash;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;

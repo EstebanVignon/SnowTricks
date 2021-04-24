@@ -7,7 +7,6 @@ namespace App\Actions\Security;
 use App\Entity\TokenHistory;
 use App\Repository\TokenHistoryRepository;
 use App\Repository\UserRepository;
-use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -19,7 +18,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class ResendRegistrationToken
+class ResendRegistrationToken
 {
     /**
      * @var FlashBagInterface
@@ -58,8 +57,7 @@ final class ResendRegistrationToken
         TokenHistoryRepository $tokenHistoryRepository,
         UserRepository $userRepository,
         MailerInterface $mailer
-    )
-    {
+    ) {
         $this->flash = $flash;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;

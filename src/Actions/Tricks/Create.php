@@ -49,8 +49,7 @@ final class Create
         EntityManagerInterface $em,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;

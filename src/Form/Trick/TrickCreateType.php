@@ -22,8 +22,7 @@ class TrickCreateType extends AbstractType
 
     public function __construct(
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
     }
 

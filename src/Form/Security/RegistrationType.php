@@ -23,8 +23,7 @@ class RegistrationType extends AbstractType
 
     public function __construct(
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
     }
 

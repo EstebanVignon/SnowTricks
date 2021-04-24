@@ -57,8 +57,7 @@ final class Edit
         TrickRepository $trickRepository,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;

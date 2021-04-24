@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"title"}, message="Ce Trick existe déjà")
  */
-final class Trick extends AbstractEntity
+class Trick extends AbstractEntity
 {
     /**
      * @ORM\Column(type="string", length=255)

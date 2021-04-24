@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -49,8 +50,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         FlashBagInterface $flashBag,
         UserRepository $userRepository,
         TokenHistoryRepository $tokenHistoryRepository
-    )
-    {
+    ) {
         $this->encoder = $encoder;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
@@ -71,9 +71,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $user = $userProvider->loadUserByUsername($credentials['username']);
-
-        if (!$user) {
+        try {
+            $user = $userProvider->loadUserByUsername($credentials['username']);
+        } catch (UsernameNotFoundException $exception) {
             throw new CustomUserMessageAuthenticationException('Identifiants invalides');
         }
         return $user;
@@ -99,7 +99,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
             if (count($tokens) === 0) {
                 $this->flashBag->add('warning-no-token', [
-                    "message" => "Votre lien de validation à périmé, cliquez sur le bouton ci-dessous pour le renvoyer sur votre boite mail",
+                    "message" => "Lien de validation à périmé, cliquez sur le bouton ci-dessous pour le renvoyer",
                     "link" => $url
                 ]);
             } else {
@@ -116,6 +116,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): Response
     {
+        $this->flashBag->add('success', "Vous êtes connecté");
         return new RedirectResponse('/');
     }
 

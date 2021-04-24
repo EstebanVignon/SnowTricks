@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="esvi_video")
  * @ORM\Entity(repositoryClass=VideoRepository::class)
  */
-final class Video extends AbstractEntity
+class Video extends AbstractEntity
 {
     /**
      * @ORM\Column(type="string", length=255)

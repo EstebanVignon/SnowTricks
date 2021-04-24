@@ -27,8 +27,7 @@ class PurgeTokenHistoryCommand extends Command
     public function __construct(
         TokenHistoryRepository $tokenHistoryRepository,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         parent::__construct();
         $this->tokenHistoryRepository = $tokenHistoryRepository;
         $this->entityManager = $entityManager;

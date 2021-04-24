@@ -14,16 +14,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-final class Registration
+class Registration
 {
     /**
      * @var FormFactoryInterface
@@ -68,8 +66,7 @@ final class Registration
         UrlGeneratorInterface $urlGenerator,
         UserPasswordEncoderInterface $encoder,
         MailerInterface $mailer
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->authenticationUtils = $authenticationUtils;
         $this->em = $em;
