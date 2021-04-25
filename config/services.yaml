@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     main_picture_directory: '%kernel.project_dir%/public/assets/uploads/tricks-main-picture'
+    tricks_pictures_directory: '%kernel.project_dir%/public/assets/uploads/tricks-pictures'
 
 services:
     # default configuration for services in *this* file

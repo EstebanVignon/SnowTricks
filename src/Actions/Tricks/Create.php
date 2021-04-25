@@ -10,6 +10,7 @@ use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,8 @@ class Create
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash,
         ContainerBagInterface $params
-    ) {
+    )
+    {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
@@ -77,6 +79,27 @@ class Create
         if ($form->isSubmitted() && $form->isValid()) {
             $trick = $form->getData();
 
+            //PICTURES
+            $pictures = $form->get('pictures')->getData();
+
+            if ($pictures) {
+                foreach ($pictures as $picture) {
+                    $file = $picture->getFile();
+                    $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
+                    try {
+                        $file->move(
+                            $this->params->get('tricks_pictures_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        throw new FileException($e);
+                    }
+
+                    $picture->setFileName($newFilename);
+                    $this->em->persist($picture);
+                }
+            }
+
             //File MainPicture Upload
             $mainPicture = $form->get('mainPicture')->getData();
             if ($mainPicture) {
@@ -88,9 +111,12 @@ class Create
                 $trick->setMainPicture($file);
             }
 
+            //Videos
             foreach ($trick->getVideos() as $video) {
                 $this->em->persist($video);
             }
+
+            //Persist & Flush
             $this->em->persist($trick);
             $this->em->flush();
 

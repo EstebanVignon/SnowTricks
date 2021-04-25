@@ -78,6 +78,11 @@ class TrickCreateType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => TrickPictureType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ->setMethod('POST')
             ->setAction('');
     }

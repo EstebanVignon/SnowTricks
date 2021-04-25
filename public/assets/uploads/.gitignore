@@ -1,0 +1,5 @@
+tricks-main-picture/*
+!tricks-main-picture/default.jpg
+
+tricks-pictures/*
+!pictures/default.jpg
