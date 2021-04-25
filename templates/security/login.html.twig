@@ -20,8 +20,11 @@
             {{ form_row(form.username) }}
             {{ form_row(form.password) }}
 
-            <a class="block mt-5 text-gray-400" href="{{ path('security_password_lost_request') }}">Mot de passe
-                oublié</a>
+            <a class="block mt-5 text-gray-400" href="{{ path('security_password_lost_request') }}">
+                Mot de passe oublié
+            </a>
+
+            <a class="block mt-5 text-gray-400" href="{{ path('security_registration') }}">S'inscrire</a>
 
             <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
                     type="submit">Se connecter

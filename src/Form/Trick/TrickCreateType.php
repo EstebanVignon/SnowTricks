@@ -8,10 +8,12 @@ use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class TrickCreateType extends AbstractType
 {
@@ -22,7 +24,8 @@ class TrickCreateType extends AbstractType
 
     public function __construct(
         CategoryRepository $categoryRepository
-    ) {
+    )
+    {
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -41,8 +44,20 @@ class TrickCreateType extends AbstractType
                     'placeholder' => 'Saisir la description du trick'
                 ]
             ])
-            ->add('mainPicture', TextType::class, [
-                'required' => false
+            ->add('mainPicture', FileType::class, [
+                'label' => 'Image mise en avant du trick',
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
