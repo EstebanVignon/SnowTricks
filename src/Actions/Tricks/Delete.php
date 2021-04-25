@@ -51,8 +51,7 @@ class Delete
         TrickRepository $trickRepository,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
         $this->trickRepository = $trickRepository;

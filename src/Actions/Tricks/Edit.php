@@ -9,6 +9,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +51,14 @@ class Edit
      * @var FlashBagInterface
      */
     private FlashBagInterface $flash;
+    /**
+     * @var ContainerBagInterface
+     */
+    private ContainerBagInterface $params;
+    /**
+     * @var Filesystem
+     */
+    private Filesystem $filesystem;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -56,7 +66,9 @@ class Edit
         EntityManagerInterface $em,
         TrickRepository $trickRepository,
         UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flash
+        FlashBagInterface $flash,
+        ContainerBagInterface $params,
+        Filesystem $filesystem
     ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
@@ -64,6 +76,8 @@ class Edit
         $this->trickRepository = $trickRepository;
         $this->urlGenerator = $urlGenerator;
         $this->flash = $flash;
+        $this->params = $params;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -89,6 +103,23 @@ class Edit
                 $video->setTrick($newTrick);
                 $this->em->persist($video);
             }
+
+            //File MainPicture Upload
+            $mainPicture = $form->get('mainPicture')->getData();
+            if ($mainPicture) {
+                if ($trick->getMainPicture() !== "default.jpg") {
+                    $oldFile = $this->params->get('main_picture_directory') . '/' . $trick->getMainPicture();
+                    $this->filesystem->remove([$oldFile]);
+                }
+                $file = md5(uniqid()) . '.' . $mainPicture->guessExtension();
+                $mainPicture->move(
+                    $this->params->get('main_picture_directory'),
+                    $file
+                );
+                $trick->setMainPicture($file);
+            }
+
+
             $this->em->persist($newTrick);
             $this->em->flush();
 

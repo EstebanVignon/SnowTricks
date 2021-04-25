@@ -328,23 +328,23 @@ Labels
             {%- endif -%}
         {%- endif -%}
 
-            <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
-            {%- if translation_domain is same as(false) -%}
-                {%- if label_html is same as(false) -%}
-                    {{- label -}}
-                {%- else -%}
-                    {{- label|raw -}}
-                {%- endif -%}
+        <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+        {%- if translation_domain is same as(false) -%}
+            {%- if label_html is same as(false) -%}
+                {{- label -}}
             {%- else -%}
-                <div class="{{ block('form_label_class') }}">
+                {{- label|raw -}}
+            {%- endif -%}
+        {%- else -%}
+            <div class="{{ block('form_label_class') }}">
                 {%- if label_html is same as(false) -%}
                     {{- label|trans(label_translation_parameters, translation_domain) -}}
                 {%- else -%}
                     {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
                 {%- endif -%}
-                </div>
-            {%- endif -%}
-            </{{ element|default('label') }}>
+            </div>
+        {%- endif -%}
+        </{{ element|default('label') }}>
     {%- endif -%}
 {%- endblock form_label -%}
 
@@ -531,3 +531,29 @@ Custom blocks
 {% block custom_button_class -%}
     bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline
 {% endblock custom_button_class -%}
+
+{# FILE #}
+{% block input_class_for_file -%}
+    {% if form.vars.errors|length %}border-red border-1{% endif %} appearance-none w-full py-2 text-gray-900 dark:text-gray-300
+{% endblock input_class_for_file -%}
+
+{%- block form_widget_simple_for_file_widget -%}
+    <input class="{{ block('input_class_for_file') }}"
+           type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple_for_file_widget -%}
+
+{% block file_widget -%}
+    <{{ element|default('div') }} class="">
+    {%- set type = type|default('file') -%}
+    {{- block('form_widget_simple_for_file_widget') -}}
+    {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label')|trim }) -%}
+    {%- set input_lang = 'en' -%}
+    {% if app is defined and app.request is defined %}{%- set input_lang = app.request.locale -%}{%- endif -%}
+    <label for="{{ form.vars.id }}"
+           lang="{{ input_lang }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+        {%- if attr.placeholder is defined and attr.placeholder is not none -%}
+            {{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+        {%- endif -%}
+    </label>
+    </{{ element|default('div') }}>
+{% endblock %}

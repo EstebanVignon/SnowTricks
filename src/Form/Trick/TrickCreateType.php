@@ -24,8 +24,7 @@ class TrickCreateType extends AbstractType
 
     public function __construct(
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -39,7 +38,7 @@ class TrickCreateType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Titre',
+                'label' => 'Description',
                 'attr' => [
                     'placeholder' => 'Saisir la description du trick'
                 ]
@@ -50,12 +49,13 @@ class TrickCreateType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '2048k',
+                        'maxSizeMessage' => 'Fichier trop lourd, doit être inférieur à 2Mo',
                         'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
+                            'image/png',
+                            'image/jpeg'
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'Doit être un .png ou .jpg',
                     ])
                 ],
             ])

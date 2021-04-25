@@ -13,18 +13,33 @@
 
     <div class="py-12 my-12 bg-white dark:bg-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
             {{ form_start(form) }}
             {{ form_errors(form) }}
+
+            <div class="w-80 mx-auto px-5 flex justify-center flex-col items-center">
+                {% if form.vars.data.mainPicture %}
+                    <p class="mb-2">Image mise en avant actuellement :</p>
+                    <img class="w-36"
+                         src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ form.vars.data.mainPicture }}"
+                         alt="Main Picture">
+                {% endif %}
+                {{ form_row(form.mainPicture) }}
+            </div>
+
+            <hr class="mt-8 mx-auto" style="border-top: 1px solid #ccc;max-width: 500px;">
+
             <div class="md:flex">
                 <div class="md:w-1/2 w-full px-5">
                     {{ form_row(form.title) }}
                     {{ form_row(form.description) }}
                 </div>
                 <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(form.mainPicture) }}
                     {{ form_row(form.category) }}
                 </div>
             </div>
+
+            <hr class="mt-8 mx-auto" style="border-top: 1px solid #ccc;max-width: 500px;">
 
             <div class="px-5">
                 {{ form_row(form.videos) }}

@@ -8,10 +8,12 @@ use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class TrickEditType extends AbstractType
 {
@@ -36,13 +38,26 @@ class TrickEditType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Titre',
+                'label' => 'Description',
                 'attr' => [
                     'placeholder' => 'Saisir la description du trick'
                 ]
             ])
-            ->add('mainPicture', TextType::class, [
-                'required' => false
+            ->add('mainPicture', FileType::class, [
+                'label' => "Modifier l'image mise en avant",
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'maxSizeMessage' => 'Fichier trop lourd, doit être inférieur à 2Mo',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg'
+                        ],
+                        'mimeTypesMessage' => 'Doit être un .png ou .jpg',
+                    ])
+                ],
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',

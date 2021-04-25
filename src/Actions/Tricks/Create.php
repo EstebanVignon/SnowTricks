@@ -8,6 +8,7 @@ use App\Form\Trick\TrickCreateType;
 use App\Repository\CategoryRepository;
 use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,19 +43,25 @@ class Create
      * @var FlashBagInterface
      */
     private FlashBagInterface $flash;
+    /**
+     * @var ContainerBagInterface
+     */
+    private ContainerBagInterface $params;
 
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em,
         UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flash
+        FlashBagInterface $flash,
+        ContainerBagInterface $params
     ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
         $this->urlGenerator = $urlGenerator;
         $this->flash = $flash;
+        $this->params = $params;
     }
 
     /**
@@ -69,6 +76,18 @@ class Create
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trick = $form->getData();
+
+            //File MainPicture Upload
+            $mainPicture = $form->get('mainPicture')->getData();
+            if ($mainPicture) {
+                $file = md5(uniqid()) . '.' . $mainPicture->guessExtension();
+                $mainPicture->move(
+                    $this->params->get('main_picture_directory'),
+                    $file
+                );
+                $trick->setMainPicture($file);
+            }
+
             foreach ($trick->getVideos() as $video) {
                 $this->em->persist($video);
             }
