@@ -26,7 +26,6 @@
             </nav>
             {{ dump(trick) }}
 
-
             <div>
                 {% for video in trick.videos %}
                     {{ video.link }}<br>
@@ -35,7 +34,13 @@
 
             <img src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ trick.mainPicture }}"
                  alt="{{ trick.title }} Main Picture">
-            <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
+
+            <div class="flex flex-wrap mt-12 justify-center">
+                {% for picture in trick.pictures %}
+                    <img class="w-80 mx-5"
+                         src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ picture.fileName }}"
+                         alt="{{ trick.title }} Collection Picture">
+                {% endfor %}
             </div>
 
         </div>

@@ -68,10 +68,16 @@ class Trick extends AbstractEntity
      */
     private ?Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="Trick", orphanRemoval=true)
+     */
+    private ?Collection $pictures;
+
     public function __construct()
     {
         parent::__construct();
         $this->videos = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -178,6 +184,36 @@ class Trick extends AbstractEntity
             // set the owning side to null (unless already changed)
             if ($video->getTrick() === $this) {
                 $video->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getTrick() === $this) {
+                $picture->setTrick(null);
             }
         }
 

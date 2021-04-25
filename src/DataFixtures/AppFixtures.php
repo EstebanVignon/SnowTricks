@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Picture;
 use App\Entity\TokenHistory;
 use App\Entity\Trick;
 use App\Entity\User;
@@ -78,7 +79,7 @@ class AppFixtures extends Fixture
             $title = "Trick $i " . $factory->sentence(6);
             $trick->setTitle($title)
                 ->setDescription($factory->sentence(20))
-                ->setMainPicture('https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300')
+                ->setMainPicture('default.jpg')
                 ->setCategory($categories[random_int(0, 2)]);
 
             for ($v = 1; $v <= 3; $v++) {
@@ -87,6 +88,14 @@ class AppFixtures extends Fixture
                 $video->setTrick($trick);
 
                 $manager->persist($video);
+            }
+
+            for ($p = 1; $p <= 3; $p++) {
+                $picture = new Picture();
+                $picture->setFileName('default.jpg');
+                $picture->setTrick($trick);
+
+                $manager->persist($picture);
             }
 
             $manager->persist($trick);
