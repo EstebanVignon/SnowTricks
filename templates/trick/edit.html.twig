@@ -46,7 +46,7 @@
                 const widgetsCounter = document.getElementById('widgets-counter');
                 let index = widgetsCounter.value;
                 let template = parent.dataset.prototype.replace(/__name__/g, index);
-                $(parent).append(template); //JQUERY
+                parent.insertAdjacentHTML('beforeend', template);
                 widgetsCounter.value = parseInt(index) + 1;
                 handleDeleteBtn();
             });

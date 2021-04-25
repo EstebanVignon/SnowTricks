@@ -10,31 +10,26 @@
 
     <div class="py-12 my-12 bg-white dark:bg-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
-                {% for trick in tricks %}
-                        <div class="shadow-md rounded-2xl bg-white dark:bg-gray-800">
-                            <img class="object-center object-cover rounded-t-2xl w-full max-h-96 md:h-44 lg:h-52"
-                                 src="{{ trick.mainPicture }}"
-                                 alt="Tricks Picture">
-                            <div class="p-5">
-                                <h3 class="mb-3 text-gray-900 dark:text-gray-100 text-center pb-3 text-xl">
-                                    {{ trick.title }}
-                                </h3>
-                                <div class="text-center mb-3">
-                                    <a href="{{ path('trick_category', {'slug' : trick.category.slug }) }}">
-                                        <span class="mx-auto bg-gray-100 dark:bg-gray-900 dark:text-gray-100 rounded-md px-2 py-1 text-sm">{{ trick.category.name }}</span>
-                                    </a>
-                                </div>
-                                <div class="p-3 text-center">
-                                    <a href="{{ path('show_trick', {'slug' : trick.slug}) }}">
-                                        <button class="rounded-md mx-auto bg-green-900 dark:bg-green-300 dark:text-black text-white px-6 py-3">Voir le trick</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                {% endfor %}
+            <div id="tricks-container"
+                 class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
+                {% include '_tricks.html.twig' %}
             </div>
+            <button id="load-more-tricks-btn"
+                    data-current-tricks-nbr="0"
+                    class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
+                Voir Plus
+            </button>
         </div>
     </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('homepage') }}
+
 
 {% endblock %}

@@ -65,30 +65,33 @@ class AppFixtures extends Fixture
             $manager->persist($token);
         }
 
+        $categories = [];
         for ($c = 1; $c <= 3; $c++) {
             $cat = new Category();
             $cat->create("Catégorie $c");
             $manager->persist($cat);
-
-            for ($i = 1; $i <= mt_rand(10, 25); $i++) {
-                $trick = new Trick();
-                $title = "Trick " . $factory->sentence(6);
-                $trick->setTitle($title)
-                    ->setDescription($factory->sentence(20))
-                    ->setMainPicture('https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300')
-                    ->setCategory($cat);
-
-                for ($v = 1; $v <= 3; $v++) {
-                    $video = new Video();
-                    $video->setLink('https://www.youtube.com/watch?v=BHACKCNDMW8');
-                    $video->setTrick($trick);
-
-                    $manager->persist($video);
-                }
-
-                $manager->persist($trick);
-            }
+            $categories[] = $cat;
         }
+
+        for ($i = 1; $i <= 18; $i++) {
+            $trick = new Trick();
+            $title = "Trick $i " . $factory->sentence(6);
+            $trick->setTitle($title)
+                ->setDescription($factory->sentence(20))
+                ->setMainPicture('https://picsum.photos/id/' . mt_rand(1, 100) . '/300/300')
+                ->setCategory($categories[random_int(0, 2)]);
+
+            for ($v = 1; $v <= 3; $v++) {
+                $video = new Video();
+                $video->setLink('https://www.youtube.com/watch?v=BHACKCNDMW8');
+                $video->setTrick($trick);
+
+                $manager->persist($video);
+            }
+
+            $manager->persist($trick);
+        }
+
 
         $manager->flush();
     }

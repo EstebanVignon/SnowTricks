@@ -6,8 +6,11 @@ namespace App\Actions;
 
 use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 final class Home
 {
@@ -16,21 +19,39 @@ final class Home
      */
     private TrickRepository $repository;
 
+    /**
+     * @var Environment
+     */
+    private Environment $twig;
+
     public function __construct(
-        TrickRepository $repository
+        TrickRepository $repository,
+        Environment $twig
     ) {
         $this->repository = $repository;
+        $this->twig = $twig;
     }
 
     /**
      * @Route("/", name="homepage")
      * @param ViewResponder $responder
+     * @param Request $request
      * @return Response
      */
-    public function __invoke(ViewResponder $responder): Response
+    public function __invoke(ViewResponder $responder, Request $request): Response
     {
-        $tricks = $this->repository->findAll();
-
-        return $responder('homepage.html.Twig', ['tricks' => $tricks]);
+        $tricksNumber = 6;
+        if ($request->query->get('ajax')) {
+            $currentTricksNbr = $request->query->get('currentTricks');
+            $tricks = $this->repository->getTricksWithFilters($tricksNumber, $currentTricksNbr);
+            return new JsonResponse([
+                'content' => $this->twig->render('_tricks.html.twig', [
+                    'tricks' => $tricks
+                ])
+            ]);
+        } else {
+            $tricks = $this->repository->getTricksWithFilters($tricksNumber, 0);
+            return $responder('homepage.html.Twig', ['tricks' => $tricks]);
+        }
     }
 }

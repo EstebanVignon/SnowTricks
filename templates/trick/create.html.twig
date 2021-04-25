@@ -35,25 +35,26 @@
     </div>
 
     <script>
-        // add-collection-widget.js
-        $(document).ready(function () {
-            $('.add-another-collection-widget').click(function (e) {
-                let elementId = "#trick_create_videos";
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.getElementById('add-another-collection-widget').addEventListener('click', function () {
+                let parent = document.getElementById('trick_create_videos');
                 const widgetsCounter = document.getElementById('widgets-counter')
                 let index = widgetsCounter.value;
-                const template = $(elementId).data('prototype').replace(/__name__/g, index);
-                $(elementId).append(template);
+                let template = parent.dataset.prototype.replace(/__name__/g, index);
+                parent.insertAdjacentHTML('beforeend', template);
                 widgetsCounter.value = parseInt(index) + 1;
-                handleDeleteBrn();
+                handleDeleteBtn();
             });
         });
 
-        function handleDeleteBrn() {
-            $('button[data-action="delete"]').click(function () {
-                const target = this.dataset.target;
-                console.log(target)
-                $(target).remove();
-            });
+        function handleDeleteBtn() {
+            let buttons = document.querySelectorAll('button[data-action="delete"]');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function () {
+                    const target = this.dataset.target;
+                    document.getElementById(target).remove();
+                })
+            }
         }
 
         function updateWidgetsCounter() {
@@ -64,7 +65,8 @@
 
         updateWidgetsCounter();
 
-        handleDeleteBrn();
+        handleDeleteBtn();
+
     </script>
 
 {% endblock %}
@@ -79,7 +81,7 @@
             </div>
             <button type="button"
                     data-action="delete"
-                    data-target="#block_{{ id }}"
+                    data-target="block_{{ id }}"
                     class="ml-5 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
             </button>
         </div>
@@ -101,7 +103,8 @@
     <input type="hidden" id="widgets-counter" value="0">
 
     <button type="button"
-            class="add-another-collection-widget bg-blue-700 mt-5 text-white px-3 py-2 rounded-md"
+            id="add-another-collection-widget"
+            class="bg-blue-700 mt-5 text-white px-3 py-2 rounded-md"
             data-list-selector="#email-fields-list">
         Ajouter une video
     </button>
