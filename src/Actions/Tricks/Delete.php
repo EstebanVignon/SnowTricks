@@ -18,13 +18,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class Edit
+class Delete
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private FormFactoryInterface $formFactory;
-
     /**
      * @var CategoryRepository
      */
@@ -51,14 +46,13 @@ class Edit
     private FlashBagInterface $flash;
 
     public function __construct(
-        FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em,
         TrickRepository $trickRepository,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash
-    ) {
-        $this->formFactory = $formFactory;
+    )
+    {
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
         $this->trickRepository = $trickRepository;
@@ -67,7 +61,7 @@ class Edit
     }
 
     /**
-     * @Route("/trick/edit/{slug}", name="edit_trick")
+     * @Route("/trick/delete/{slug}", name="delete_trick")
      * @param string $slug
      * @param ViewResponder $responder
      * @param Request $request
@@ -81,26 +75,17 @@ class Edit
             throw new NotFoundHttpException("Trick not found");
         }
 
-        $form = $this->formFactory->createBuilder(TrickEditType::class, $trick)->getForm()->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newTrick = $form->getData();
-            foreach ($newTrick->getVideos() as $video) {
-                $video->setTrick($newTrick);
-                $this->em->persist($video);
-            }
-            $this->em->persist($newTrick);
+        if ($request->query->get('confirmation') === "yes") {
+            $this->em->remove($trick);
             $this->em->flush();
 
-            $this->flash->add('success', 'Le trick a bien été modifié');
-
-            $url = $this->urlGenerator->generate('show_trick', ['slug' => $trick->getSlug()]);
+            $this->flash->add('success', 'Le trick a bien été supprimé');
+            $url = $this->urlGenerator->generate('homepage');
             return new RedirectResponse($url);
+        } else {
+            return $responder('trick/delete.html.twig', [
+                'trick' => $trick
+            ]);
         }
-
-        return $responder('trick/edit.html.twig', [
-            'form' => $form->createView(),
-            'trick' => $trick
-        ]);
     }
 }

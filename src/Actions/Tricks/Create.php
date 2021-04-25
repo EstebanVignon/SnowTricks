@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class Create
+class Create
 {
     /**
      * @var FormFactoryInterface

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer le trick {{ trick.title }}{% endblock %}
+
+{% block body %}
+
+    {% include 'shared/_flash.html.twig' %}
+
+    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">
+        Supprimer le trick
+    </h1>
+
+    <div class="py-12 my-12 bg-white dark:bg-gray-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">
+            Êtes-vous sûr de vouloir supprimer le trick :<br>"{{ trick.title }}" ?
+        </h2>
+
+        <div class="flex justify-center">
+            <a href="{{ path('homepage') }}?confirmation=yes"
+               class="w-20 mx-2 text-center block mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+               type="submit">Retour
+            </a>
+            <a href="{{ path('delete_trick', {'slug' : trick.slug, 'confirmation':'yes'}) }}"
+               class="w-12 mx-2 text-center block mt-8 text-white dark:text-black bg-red-500 rounded-lg text-lg px-2 py-1"
+               type="submit">Oui
+            </a>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,8 +1,19 @@
 {% for trick in tricks %}
-    <div class="shadow-md rounded-2xl bg-white dark:bg-gray-800">
-        <img class="object-center object-cover rounded-t-2xl w-full max-h-96 md:h-44 lg:h-52"
-             src="{{ trick.mainPicture }}"
-             alt="Tricks Picture">
+    <div id="{{ trick.slug }}"
+         data-trick-url="{{ trick.slug }}"
+         class="shadow-md rounded-2xl bg-white dark:bg-gray-800">
+
+        <div class="relative">
+            <a href="{{ path('edit_trick', {'slug': trick.slug}) }}">
+                <img class="w-6 absolute right-10 top-2" src="{{ asset('assets/icons/edit.svg') }}" alt="Edit Icon">
+            </a>
+            <a href="{{ path('delete_trick', {'slug': trick.slug}) }}">
+                <img class="w-6 absolute right-2 top-2" src="{{ asset('assets/icons/trash.svg') }}" alt="Delete Icon">
+            </a>
+            <img class="object-center object-cover rounded-t-2xl w-full max-h-96 md:h-44 lg:h-52"
+                 src="{{ trick.mainPicture }}"
+                 alt="Tricks Picture">
+        </div>
         <div class="p-5">
             <h3 class="mb-3 text-gray-900 dark:text-gray-100 text-center pb-3 text-xl">
                 {{ trick.title }}
@@ -20,5 +31,6 @@
                 </a>
             </div>
         </div>
+
     </div>
 {% endfor %}

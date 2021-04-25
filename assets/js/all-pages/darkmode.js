@@ -8,7 +8,7 @@ if (!('theme' in localStorage)) {
 
 // BTN TOGGLER
 
-console.log(localStorage.theme);
+// console.log(localStorage.theme);
 
 let toggleBtn = document.getElementById('toggleBtn');
 

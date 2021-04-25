@@ -40,7 +40,7 @@ final class Home
      */
     public function __invoke(ViewResponder $responder, Request $request): Response
     {
-        $tricksNumber = 6;
+        $tricksNumber = 8;
         if ($request->query->get('ajax')) {
             $currentTricksNbr = $request->query->get('currentTricks');
             $tricks = $this->repository->getTricksWithFilters($tricksNumber, $currentTricksNbr);
