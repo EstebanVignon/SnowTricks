@@ -17,7 +17,7 @@ class Picture extends AbstractEntity
      */
     private string $fileName;
 
-    private UploadedFile $file;
+    private ?UploadedFile $file = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")
@@ -52,7 +52,7 @@ class Picture extends AbstractEntity
     /**
      * @return UploadedFile
      */
-    public function getFile(): UploadedFile
+    public function getFile(): ?UploadedFile
     {
         return $this->file;
     }
@@ -60,7 +60,7 @@ class Picture extends AbstractEntity
     /**
      * @param UploadedFile $file
      */
-    public function setFile(UploadedFile $file): void
+    public function setFile(?UploadedFile $file): void
     {
         $this->file = $file;
     }

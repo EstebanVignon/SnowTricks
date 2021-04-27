@@ -6,6 +6,7 @@ namespace App\Actions\Tricks;
 
 use App\Entity\Picture;
 use App\Form\Trick\TrickEditType;
+use App\Helpers\PicturesFilesystemHelper;
 use App\Repository\CategoryRepository;
 use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
@@ -67,6 +68,11 @@ class Edit
      */
     private PictureRepository $pictureRepository;
 
+    /**
+     * @var PicturesFilesystemHelper
+     */
+    private PicturesFilesystemHelper $picturesFilesystemHelper;
+
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
@@ -76,7 +82,8 @@ class Edit
         FlashBagInterface $flash,
         ContainerBagInterface $params,
         Filesystem $filesystem,
-        PictureRepository $pictureRepository
+        PictureRepository $pictureRepository,
+        PicturesFilesystemHelper $picturesFilesystemHelper
     )
     {
         $this->formFactory = $formFactory;
@@ -88,6 +95,7 @@ class Edit
         $this->params = $params;
         $this->filesystem = $filesystem;
         $this->pictureRepository = $pictureRepository;
+        $this->picturesFilesystemHelper = $picturesFilesystemHelper;
     }
 
     /**
@@ -125,48 +133,57 @@ class Edit
             $idToAdd = array_diff($picturesArray, $oldPictures);
             $idToUpdate = array_intersect($oldPictures, $picturesArray);
 
+//            dump('all', $picturesArray);
+//            dump('delete', $idToDelete);
+//            dump('add', $idToAdd);
+//            dump('update', $idToUpdate);
+//
+//            exit();
+
             //Delete pictures
             if ($idToDelete) {
                 foreach ($idToDelete as $id) {
-                    $picture = $this->pictureRepository->findOneBy(['id' => $id]);
-                    if ($picture->getFileName() !== "default.jpg") {
-                        $this->filesystem->remove(
-                            $this->params->get('tricks_pictures_directory') . '/' . $picture->getFileName()
-                        );
-                    }
-                    $this->em->remove($picture);
+                    $this->picturesFilesystemHelper->deleteTrick(
+                        $id,
+                        'tricks_pictures_directory'
+                    );
                 }
             }
 
             foreach ($pictures as $picture) {
                 //Add new pictures
                 if (in_array($picture->getId(), $idToAdd)) {
-                    $file = $picture->getFile();
-                    $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
-                    try {
-                        $file->move(
-                            $this->params->get('tricks_pictures_directory'),
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        throw new FileException($e);
-                    }
-
-                    $picture->setFileName($newFilename);
-                    $picture->setTrick($trick);
-                    $this->em->persist($picture);
+                    $this->picturesFilesystemHelper->createPicture(
+                        $picture,
+                        'tricks_pictures_directory',
+                        $trick
+                    );
                 }
                 //Edit pictures
-                // if (in_array($picture->getId(), $idToEdit)) {
+                if (in_array($picture->getId(), $idToUpdate)) {
+                    if ($picture->getFile() !== null) {
+                        $this->picturesFilesystemHelper->deleteTrick(
+                            $picture->getId(),
+                            'tricks_pictures_directory'
+                        );
+                        $this->picturesFilesystemHelper->createPicture(
+                            $picture,
+                            'tricks_pictures_directory',
+                            $trick
+                        );
+                    }
+                }
             }
 
+            //VIDEOS
 
             foreach ($newTrick->getVideos() as $video) {
                 $video->setTrick($newTrick);
                 $this->em->persist($video);
             }
 
-            //File MainPicture Upload
+            // MAIN IMAGE
+
             $mainPicture = $form->get('mainPicture')->getData();
             if ($mainPicture) {
                 if ($trick->getMainPicture() !== "default.jpg") {
