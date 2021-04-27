@@ -32,17 +32,24 @@
             <img src="{{ asset('assets/uploads/tricks-main-picture/')~trick.mainPicture }}"
                  alt="{{ trick.title }} Main Picture">
 
-            <div class="flex flex-wrap mt-12 justify-center">
+            <div class="flex flex-wrap mt-12 justify-center align-top">
                 {% for picture in trick.pictures %}
-                    <img class="w-80 mx-5"
+                    <img class="w-72 h-56 mx-5 object-cover block"
                          src="{{ asset('assets/uploads/tricks-pictures/')~picture.fileName }}"
                          alt="{{ trick.title }} Collection Picture">
                 {% endfor %}
             </div>
 
-            <div>
+            <div class="flex mt-12 justify-center">
                 {% for video in trick.videos %}
-                    {{ video.link }}<br>
+                    <iframe class="m-2"
+                            width="320"
+                            height="180"
+                            src="https://www.youtube.com/embed/{{ video.link|youtubeLinkToId }}"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
                 {% endfor %}
             </div>
 
