@@ -4,7 +4,9 @@
          class="shadow-2xl rounded-2xl bg-white dark:bg-gray-800">
 
         <div class="relative">
-            {% include '_delete_edit_trick_icons.html.twig' %}
+            <div class="flex p-1 absolute right-2 top-2 bg-white rounded">
+                {% include '_delete_edit_trick_icons.html.twig' %}
+            </div>
             <img class="object-center object-cover rounded-t-2xl w-full max-h-96 md:h-44 lg:h-52"
                  src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ trick.mainPicture }}"
                  alt="{{ trick.title }} Main Picture">

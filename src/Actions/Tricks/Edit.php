@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Actions\Tricks;
 
+use App\Entity\Picture;
 use App\Form\Trick\TrickEditType;
 use App\Repository\CategoryRepository;
+use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,6 +62,10 @@ class Edit
      * @var Filesystem
      */
     private Filesystem $filesystem;
+    /**
+     * @var PictureRepository
+     */
+    private PictureRepository $pictureRepository;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -68,8 +75,10 @@ class Edit
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash,
         ContainerBagInterface $params,
-        Filesystem $filesystem
-    ) {
+        Filesystem $filesystem,
+        PictureRepository $pictureRepository
+    )
+    {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
@@ -78,6 +87,7 @@ class Edit
         $this->flash = $flash;
         $this->params = $params;
         $this->filesystem = $filesystem;
+        $this->pictureRepository = $pictureRepository;
     }
 
     /**
@@ -91,6 +101,10 @@ class Edit
     {
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
 
+        $oldPictures = array_map(function (Picture $picture) {
+            return $picture->getId();
+        }, $trick->getPictures()->toArray());
+
         if (!$trick) {
             throw new NotFoundHttpException("Trick not found");
         }
@@ -99,6 +113,54 @@ class Edit
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newTrick = $form->getData();
+
+            //PICTURES
+
+            //Pictures array filter add / delete / edit
+            $pictures = $form->get('pictures')->getData();
+            $picturesArray = array_map(function (Picture $picture) {
+                return $picture->getId();
+            }, $trick->getPictures()->toArray());
+            $idToDelete = array_diff($oldPictures, $picturesArray);
+            $idToAdd = array_diff($picturesArray, $oldPictures);
+            $idToUpdate = array_intersect($oldPictures, $picturesArray);
+
+            //Delete pictures
+            if ($idToDelete) {
+                foreach ($idToDelete as $id) {
+                    $picture = $this->pictureRepository->findOneBy(['id' => $id]);
+                    if ($picture->getFileName() !== "default.jpg") {
+                        $this->filesystem->remove(
+                            $this->params->get('tricks_pictures_directory') . '/' . $picture->getFileName()
+                        );
+                    }
+                    $this->em->remove($picture);
+                }
+            }
+
+            foreach ($pictures as $picture) {
+                //Add new pictures
+                if (in_array($picture->getId(), $idToAdd)) {
+                    $file = $picture->getFile();
+                    $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
+                    try {
+                        $file->move(
+                            $this->params->get('tricks_pictures_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        throw new FileException($e);
+                    }
+
+                    $picture->setFileName($newFilename);
+                    $picture->setTrick($trick);
+                    $this->em->persist($picture);
+                }
+                //Edit pictures
+                // if (in_array($picture->getId(), $idToEdit)) {
+            }
+
+
             foreach ($newTrick->getVideos() as $video) {
                 $video->setTrick($newTrick);
                 $this->em->persist($video);

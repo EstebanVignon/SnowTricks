@@ -24,22 +24,25 @@
 
                 </ol>
             </nav>
-            {{ dump(trick) }}
 
-            <div>
-                {% for video in trick.videos %}
-                    {{ video.link }}<br>
-                {% endfor %}
+            <div class="flex p-1 bg-white rounded">
+                {% include '_delete_edit_trick_icons.html.twig' %}
             </div>
 
-            <img src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ trick.mainPicture }}"
+            <img src="{{ asset('assets/uploads/tricks-main-picture/')~trick.mainPicture }}"
                  alt="{{ trick.title }} Main Picture">
 
             <div class="flex flex-wrap mt-12 justify-center">
                 {% for picture in trick.pictures %}
                     <img class="w-80 mx-5"
-                         src="{{ asset('assets/uploads/tricks-pictures/') }}{{ picture.fileName }}"
+                         src="{{ asset('assets/uploads/tricks-pictures/')~picture.fileName }}"
                          alt="{{ trick.title }} Collection Picture">
+                {% endfor %}
+            </div>
+
+            <div>
+                {% for video in trick.videos %}
+                    {{ video.link }}<br>
                 {% endfor %}
             </div>
 

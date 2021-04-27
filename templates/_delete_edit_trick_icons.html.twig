@@ -1,8 +1,6 @@
-<div class="flex p-1 absolute right-2 top-2 bg-white rounded">
-    <a href="{{ path('edit_trick', {'slug': trick.slug}) }}">
-        <img class="w-6 mx-1" src="{{ asset('assets/icons/edit.svg') }}" alt="Edit Icon">
-    </a>
-    <a href="{{ path('delete_trick', {'slug': trick.slug}) }}">
-        <img class="w-6 mx-1" src="{{ asset('assets/icons/trash.svg') }}" alt="Delete Icon">
-    </a>
-</div>
+<a href="{{ path('edit_trick', {'slug': trick.slug}) }}">
+    <img class="w-6 mx-1" src="{{ asset('assets/icons/edit.svg') }}" alt="Edit Icon">
+</a>
+<a href="{{ path('delete_trick', {'slug': trick.slug}) }}">
+    <img class="w-6 mx-1" src="{{ asset('assets/icons/trash.svg') }}" alt="Delete Icon">
+</a>

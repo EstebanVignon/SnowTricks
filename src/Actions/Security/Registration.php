@@ -19,6 +19,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class Registration
@@ -53,20 +54,28 @@ class Registration
      */
     private MailerInterface $mailer;
 
+    /**
+     * @var Security
+     */
+    private Security $security;
+
     public function __construct(
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
         FlashBagInterface $flash,
         UrlGeneratorInterface $urlGenerator,
         UserPasswordEncoderInterface $encoder,
-        MailerInterface $mailer
-    ) {
+        MailerInterface $mailer,
+        Security $security
+    )
+    {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->flash = $flash;
         $this->urlGenerator = $urlGenerator;
         $this->encoder = $encoder;
         $this->mailer = $mailer;
+        $this->security = $security;
     }
 
     /**
@@ -76,6 +85,13 @@ class Registration
      */
     public function __invoke(ViewResponder $responder, Request $request)
     {
+
+        if ($this->security->getUser()) {
+            $this->flash->add('warning', 'Vous êtes déjà connecté');
+            $url = $this->urlGenerator->generate('homepage');
+            return new RedirectResponse($url);
+        }
+
         $form = $this->formFactory->createBuilder(RegistrationType::class)->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

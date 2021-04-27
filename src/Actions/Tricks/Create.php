@@ -81,7 +81,6 @@ class Create
 
             //PICTURES
             $pictures = $form->get('pictures')->getData();
-
             if ($pictures) {
                 foreach ($pictures as $picture) {
                     $file = $picture->getFile();

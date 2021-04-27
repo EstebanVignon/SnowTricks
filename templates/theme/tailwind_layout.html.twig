@@ -12,7 +12,18 @@ Widgets
     {% endif %}
 {%- endblock form_widget -%}
 
+
+
 {%- block form_widget_simple -%}
+    {%- if type is not defined or type != 'hidden' -%}
+        {%- set className = ' form-control' -%}
+        {%- if type|default('') == 'file' -%}
+            {%- set className = ' custom-file-input' -%}
+        {%- elseif type|default('') == 'range' -%}
+            {%- set className = ' form-control-range' -%}
+        {%- endif -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ className)|trim}) -%}
+    {%- endif -%}
     {%- set type = type|default('text') -%}
     {%- if type == 'range' or type == 'color' -%}
         {# Attribute "required" is not supported #}
@@ -533,8 +544,9 @@ Custom blocks
 {% endblock custom_button_class -%}
 
 {# FILE #}
+
 {% block input_class_for_file -%}
-    {% if form.vars.errors|length %}border-red border-1{% endif %} appearance-none w-full py-2 text-gray-900 dark:text-gray-300
+    {% if form.vars.errors|length %}border-red border-1{% endif %}file-input appearance-none w-full py-2 text-gray-900 dark:text-gray-300
 {% endblock input_class_for_file -%}
 
 {%- block form_widget_simple_for_file_widget -%}
@@ -547,7 +559,7 @@ Custom blocks
     {%- set type = type|default('file') -%}
     {{- block('form_widget_simple_for_file_widget') -}}
     {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label')|trim }) -%}
-    {%- set input_lang = 'en' -%}
+    {%- set input_lang = 'fr' -%}
     {% if app is defined and app.request is defined %}{%- set input_lang = app.request.locale -%}{%- endif -%}
     <label for="{{ form.vars.id }}"
            lang="{{ input_lang }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>

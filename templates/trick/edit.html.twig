@@ -19,9 +19,9 @@
 
             <div class="w-80 mx-auto px-5 flex justify-center flex-col items-center">
                 {% if form.vars.data.mainPicture %}
-                    <p class="mb-2">Image mise en avant actuellement :</p>
-                    <img class="w-36"
-                         src="{{ asset('assets/uploads/tricks-main-picture/') }}{{ form.vars.data.mainPicture }}"
+                    <p class="mb-2 dark:text-white">Image mise en avant actuellement :</p>
+                    <img class="w-auto max-w-4xl block object-contain	"
+                         src="{{ asset('assets/uploads/tricks-main-picture/')~form.vars.data.mainPicture }}"
                          alt="Main Picture">
                 {% endif %}
                 {{ form_row(form.mainPicture) }}
@@ -45,6 +45,10 @@
                 {{ form_row(form.videos) }}
             </div>
 
+            <div class="px-5">
+                {{ form_row(form.pictures) }}
+            </div>
+
             <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
                     type="submit">Sauvegarder
             </button>
@@ -52,8 +56,21 @@
             {{ form_end(form) }}
 
         </div>
+
+
     </div>
 
+    <script type="text/javascript">
+        /*
+        $('.file-input').on('click', function (event) {
+            var inputFile = event.currentTarget;
+            console.log(inputFile);
+            console.log($(inputFile).find('.custom-file-label').html(inputFile.files[0].name))
+        });
+        */
+    </script>
+
+    {# VIDEOS #}
     <script>
         document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById('add-another-collection-widget').addEventListener('click', function () {
@@ -88,8 +105,45 @@
         handleDeleteBtn();
     </script>
 
+    {# PICTURES #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.getElementById('add-another-collection-widget-picture').addEventListener('click', function () {
+                let pictureParent = document.getElementById('trick_edit_pictures');
+                const picturewidgetsCounter = document.getElementById('picture-widgets-counter')
+                let index = picturewidgetsCounter.value;
+                let template = pictureParent.dataset.prototype.replace(/__name__/g, index);
+                pictureParent.insertAdjacentHTML('beforeend', template);
+                picturewidgetsCounter.value = parseInt(index) + 1;
+                pictureHandleDeleteBtn();
+            });
+        });
+
+        function pictureHandleDeleteBtn() {
+            let buttons = document.querySelectorAll('button[data-action="delete-picture"]');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function () {
+                    const target = this.dataset.target;
+                    document.getElementById(target).remove();
+                })
+            }
+        }
+
+        function updatePictureWidgetsCounter() {
+            const elements = document.querySelectorAll('#trick_edit_videos > div');
+            const widgetsCounter = document.getElementById('picture-widgets-counter');
+            widgetsCounter.value = elements.length;
+        }
+
+        updatePictureWidgetsCounter();
+
+        pictureHandleDeleteBtn();
+
+    </script>
+
 {% endblock %}
 
+{# VIDEO #}
 
 {% block _trick_edit_videos_entry_widget %}
 
@@ -131,3 +185,48 @@
 {% endblock %}
 
 
+{# PICTURE #}
+
+{% block _trick_edit_pictures_entry_widget %}
+
+    <div id="block_{{ id }}" class=" w-full md:w-1/2 px-0 md:px-5">
+
+        <div class="m-2 p-2 flex relative bg-gray-100 dark:bg-gray-800 rounded-xl shadow-xl ">
+            <button type="button"
+                    data-action="delete-picture"
+                    data-target="block_{{ id }}"
+                    class="mr-3 absolute top-2 right-0 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
+            </button>
+
+            {% if value.fileName is defined %}
+                <img class="w-1/3 mr-3 rounded-xl"
+                     src="{{ asset('assets/uploads/tricks-pictures/')~value.fileName }}"
+                     alt="Main Picture">
+
+            {% endif %}
+
+            <div class="w-full">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block _trick_edit_pictures_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_edit_pictures_widget %}
+    {{ form_widget(form, { 'attr': {'class': 'w-full md:flex flex-wrap'} }) }}
+
+    <input type="hidden" id="picture-widgets-counter" value="0">
+
+    <button type="button"
+            id="add-another-collection-widget-picture"
+            class="bg-blue-700 mt-5 text-white px-3 py-2 rounded-md"
+            data-list-selector="#email-fields-list">
+        Ajouter une image
+    </button>
+
+{% endblock %}
