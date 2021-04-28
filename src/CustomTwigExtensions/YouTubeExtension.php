@@ -6,7 +6,6 @@ namespace App\CustomTwigExtensions;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 class YouTubeExtension extends AbstractExtension
 {

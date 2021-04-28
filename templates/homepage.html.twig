@@ -4,22 +4,32 @@
 
 {% block body %}
 
-    {% include 'shared/_flash.html.twig' %}
-
-    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Bienvenue</h1>
-
-    <div class="py-12 my-12 bg-white dark:bg-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div id="tricks-container"
-                 class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
-                {% include '_tricks.html.twig' %}
-            </div>
-            <button id="load-more-tricks-btn"
-                    data-current-tricks-nbr="0"
-                    class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
-                Voir Plus
-            </button>
+    <div class="relative text-center">
+        <img class="w-full h-screen/80 object-cover block"
+             src="{{ asset('assets/img/banner3.jpg') }}"
+             alt="Snowtricks Banner">
+        <h1 class="absolute text-shadow text-4xl w-full mx-auto text-center text-gray-100 top-28">
+            SnowTricks<br>Site communautaire autour des tricks de snowboard
+        </h1>
+        <div class="absolute top-0 w-full">
+            {% include 'shared/_flash.html.twig' %}
         </div>
+    </div>
+
+    <div class="mt-20 pb-28 max-w-screen-xl mx-auto px-8">
+        <a href="{{ path('create_trick') }}"
+           class="block bg-gray-800 dark:bg-gray-100 rounded-xl shadow-xl text-gray-100 dark:text-gray-800 w-32 px-2 py-2 mb-6 text-center">
+            Créer un trick
+        </a>
+        <div id="tricks-container"
+             class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
+            {% include '_tricks.html.twig' %}
+        </div>
+        <button id="load-more-tricks-btn"
+                data-current-tricks-nbr="0"
+                class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
+            Voir Plus
+        </button>
     </div>
 
 {% endblock %}

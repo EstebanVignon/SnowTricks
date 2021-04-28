@@ -6,22 +6,20 @@
 
     {% include 'shared/_flash.html.twig' %}
 
-    <div class="py-12 my-12 bg-white dark:bg-gray-700">
-        <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-lg min-h-screen/80 mx-auto px-4">
 
-            <h1 class="mt-5 text-5xl dark:text-white text-center">S'inscrire</h1>
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-            {{ form_row(form.username) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.password) }}
+        <h1 class="mt-32 text-5xl dark:text-white text-center">S'inscrire</h1>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
 
-            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
-                    type="submit">S'inscrire
-            </button>
+        <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                type="submit">S'inscrire
+        </button>
 
-            {{ form_end(form) }}
-        </div>
+        {{ form_end(form) }}
     </div>
 
 {% endblock %}

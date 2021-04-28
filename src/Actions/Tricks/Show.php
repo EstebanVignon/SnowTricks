@@ -6,7 +6,6 @@ namespace App\Actions\Tricks;
 
 use App\Entity\Comment;
 use App\Form\Comments\AddCommentType;
-use App\Form\Trick\TrickEditType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Responders\ViewResponder;

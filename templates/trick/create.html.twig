@@ -4,114 +4,54 @@
 
 {% block body %}
 
-    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Créer un trick</h1>
+    {% include 'shared/_flash.html.twig' %}
 
-    <div class="py-12 my-12 bg-white dark:bg-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-            <div class="md:flex">
-                <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(form.title) }}
-                    {{ form_row(form.description) }}
-                </div>
-                <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(form.mainPicture) }}
-                    {{ form_row(form.category) }}
-                </div>
+    <div class="max-w-screen-xl mx-auto min-h-screen/80 mb-24 px-4">
+
+        <h1 class="text-2xl my-12 mx-auto text-center text-grey-800 dark:text-white">
+            Créer un trick
+        </h1>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="md:flex">
+            <div class="md:w-1/2 w-full px-5">
+                {{ form_row(form.title) }}
+                {{ form_row(form.description) }}
             </div>
-
-            <div class="px-5">
-                {{ form_row(form.videos) }}
+            <div class="md:w-1/2 w-full px-5">
+                {{ form_row(form.mainPicture) }}
+                {{ form_row(form.category) }}
             </div>
-
-            <div class="px-5">
-                {{ form_row(form.pictures) }}
-            </div>
-
-            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
-                    type="submit">Sauvegarder
-            </button>
-
-            {{ form_end(form) }}
-
         </div>
+
+        <div class="px-5">
+            {{ form_row(form.videos) }}
+        </div>
+
+        <div class="px-5">
+            {{ form_row(form.pictures) }}
+        </div>
+
+        <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                type="submit">Sauvegarder
+        </button>
+
+        {{ form_end(form) }}
+
     </div>
-
-    {# VIDEO #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function (event) {
-            document.getElementById('add-another-collection-widget').addEventListener('click', function () {
-                let parent = document.getElementById('trick_create_videos');
-                const widgetsCounter = document.getElementById('widgets-counter')
-                let index = widgetsCounter.value;
-                let template = parent.dataset.prototype.replace(/__name__/g, index);
-                parent.insertAdjacentHTML('beforeend', template);
-                widgetsCounter.value = parseInt(index) + 1;
-                handleDeleteBtn();
-            });
-        });
-
-        function handleDeleteBtn() {
-            let buttons = document.querySelectorAll('button[data-action="delete"]');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function () {
-                    const target = this.dataset.target;
-                    document.getElementById(target).remove();
-                })
-            }
-        }
-
-        function updateWidgetsCounter() {
-            const elements = document.querySelectorAll('#trick_create_videos > div');
-            const widgetsCounter = document.getElementById('widgets-counter');
-            widgetsCounter.value = elements.length;
-        }
-
-        updateWidgetsCounter();
-
-        handleDeleteBtn();
-
-    </script>
-
-    {# PICTURES #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function (event) {
-            document.getElementById('add-another-collection-widget-picture').addEventListener('click', function () {
-                let pictureParent = document.getElementById('trick_create_pictures');
-                const picturewidgetsCounter = document.getElementById('picture-widgets-counter')
-                let index = picturewidgetsCounter.value;
-                let template = pictureParent.dataset.prototype.replace(/__name__/g, index);
-                pictureParent.insertAdjacentHTML('beforeend', template);
-                picturewidgetsCounter.value = parseInt(index) + 1;
-                pictureHandleDeleteBtn();
-            });
-        });
-
-        function pictureHandleDeleteBtn() {
-            let buttons = document.querySelectorAll('button[data-action="delete-picture"]');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function () {
-                    const target = this.dataset.target;
-                    document.getElementById(target).remove();
-                })
-            }
-        }
-        function updatePictureWidgetsCounter() {
-            const elements = document.querySelectorAll('#trick_create_videos > div');
-            const widgetsCounter = document.getElementById('picture-widgets-counter');
-            widgetsCounter.value = elements.length;
-        }
-
-        updatePictureWidgetsCounter();
-
-        pictureHandleDeleteBtn();
-
-    </script>
 
 {% endblock %}
 
-{#VIDEOS#}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('create-tricks') }}
+{% endblock %}
+
+{#
+VIDEOS
+#}
 
 {% block _trick_create_videos_entry_widget %}
 
@@ -126,11 +66,6 @@
                     class="ml-5 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
             </button>
         </div>
-
-        {# {% if value.link is defined %} #}
-        {# {{ value.link }} #}
-        {# {% endif %} #}
-
     </div>
 {% endblock %}
 
@@ -152,7 +87,9 @@
 
 {% endblock %}
 
-{#PICTURE#}
+{#
+PICTURE
+#}
 
 {% block _trick_create_pictures_entry_widget %}
 
@@ -167,10 +104,6 @@
                     class="ml-5 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
             </button>
         </div>
-
-        {# {% if value.link is defined %} #}
-        {# {{ value.link }} #}
-        {# {% endif %} #}
 
     </div>
 {% endblock %}

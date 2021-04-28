@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Tricks;
 
-use App\Form\Trick\TrickEditType;
 use App\Helpers\PicturesFilesystemHelper;
 use App\Repository\CategoryRepository;
 use App\Repository\TrickRepository;
@@ -12,7 +11,6 @@ use App\Responders\ViewResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -111,6 +109,10 @@ class Delete
                 $this->filesystem->remove(
                     $this->params->get("main_picture_directory") . '/' . $trick->getMainPicture()
                 );
+            }
+            //Comments
+            foreach ($trick->getComments() as $comment) {
+                $this->em->remove($comment);
             }
 
             //Trick

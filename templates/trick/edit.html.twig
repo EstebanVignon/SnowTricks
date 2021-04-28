@@ -8,142 +8,65 @@
 
     {% include 'shared/_flash.html.twig' %}
 
-    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">Editer le trick
-        : {{ trick.title }}</h1>
+    <div class="max-w-screen-xl mx-auto mb-24 px-4 sm:px-6 lg:px-8">
 
-    <div class="py-12 my-12 bg-white dark:bg-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-2xl my-12 mx-auto text-center text-grey-800 dark:text-white">
+            Editer le trick : {{ trick.title }}
+        </h1>
 
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-            <div class="w-80 mx-auto px-5 flex justify-center flex-col items-center">
-                {% if form.vars.data.mainPicture %}
-                    <p class="mb-2 dark:text-white">Image mise en avant actuellement :</p>
-                    <img class="w-auto max-w-4xl block object-contain	"
-                         src="{{ asset('assets/uploads/tricks-main-picture/')~form.vars.data.mainPicture }}"
-                         alt="Main Picture">
-                {% endif %}
-                {{ form_row(form.mainPicture) }}
-            </div>
-
-            <hr class="mt-8 mx-auto" style="border-top: 1px solid #ccc;max-width: 500px;">
-
-            <div class="md:flex">
-                <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(form.title) }}
-                    {{ form_row(form.description) }}
-                </div>
-                <div class="md:w-1/2 w-full px-5">
-                    {{ form_row(form.category) }}
-                </div>
-            </div>
-
-            <hr class="mt-8 mx-auto" style="border-top: 1px solid #ccc;max-width: 500px;">
-
-            <div class="px-5">
-                {{ form_row(form.videos) }}
-            </div>
-
-            <div class="px-5">
-                {{ form_row(form.pictures) }}
-            </div>
-
-            <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
-                    type="submit">Sauvegarder
-            </button>
-
-            {{ form_end(form) }}
-
+        <div class="flex justify-center flex-col items-center">
+            {% if form.vars.data.mainPicture %}
+                <h2 class="mb-3 text-xl text-center dark:text-white">Image mise en avant actuellement:</h2>
+                <img class="w-96 mx-auto"
+                     src="{{ asset('assets/uploads/tricks-main-picture/')~form.vars.data.mainPicture }}"
+                     alt="Main Picture">
+            {% endif %}
+            {{ form_row(form.mainPicture) }}
         </div>
 
+        <hr class="my-8 mx-auto hr-custom">
+
+        <div class="md:flex">
+            <div class="md:w-1/2 w-full px-5">
+                {{ form_row(form.title) }}
+                {{ form_row(form.description) }}
+            </div>
+            <div class="md:w-1/2 w-full px-5">
+                {{ form_row(form.category) }}
+            </div>
+        </div>
+
+        <hr class="my-8 mx-auto hr-custom">
+
+        <div class="px-5">
+            {{ form_row(form.videos) }}
+        </div>
+
+        <div class="px-5">
+            {{ form_row(form.pictures) }}
+        </div>
+
+        <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                type="submit">Sauvegarder
+        </button>
+
+        {{ form_end(form) }}
 
     </div>
 
-    <script type="text/javascript">
-        /*
-        $('.file-input').on('click', function (event) {
-            var inputFile = event.currentTarget;
-            console.log(inputFile);
-            console.log($(inputFile).find('.custom-file-label').html(inputFile.files[0].name))
-        });
-        */
-    </script>
-
-    {# VIDEOS #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function (event) {
-            document.getElementById('add-another-collection-widget').addEventListener('click', function () {
-                let parent = document.getElementById('trick_edit_videos');
-                const widgetsCounter = document.getElementById('widgets-counter');
-                let index = widgetsCounter.value;
-                let template = parent.dataset.prototype.replace(/__name__/g, index);
-                parent.insertAdjacentHTML('beforeend', template);
-                widgetsCounter.value = parseInt(index) + 1;
-                handleDeleteBtn();
-            });
-        })
-
-        function handleDeleteBtn() {
-            let buttons = document.querySelectorAll('button[data-action="delete"]');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function () {
-                    const target = this.dataset.target;
-                    document.getElementById(target).remove();
-                })
-            }
-        }
-
-        function updateWidgetsCounter() {
-            const elements = document.querySelectorAll('#trick_edit_videos > div');
-            const widgetsCounter = document.getElementById('widgets-counter');
-            widgetsCounter.value = elements.length;
-        }
-
-        updateWidgetsCounter();
-
-        handleDeleteBtn();
-    </script>
-
-    {# PICTURES #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function (event) {
-            document.getElementById('add-another-collection-widget-picture').addEventListener('click', function () {
-                let pictureParent = document.getElementById('trick_edit_pictures');
-                const picturewidgetsCounter = document.getElementById('picture-widgets-counter')
-                let index = picturewidgetsCounter.value;
-                let template = pictureParent.dataset.prototype.replace(/__name__/g, index);
-                pictureParent.insertAdjacentHTML('beforeend', template);
-                picturewidgetsCounter.value = parseInt(index) + 1;
-                pictureHandleDeleteBtn();
-            });
-        });
-
-        function pictureHandleDeleteBtn() {
-            let buttons = document.querySelectorAll('button[data-action="delete-picture"]');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function () {
-                    const target = this.dataset.target;
-                    document.getElementById(target).remove();
-                })
-            }
-        }
-
-        function updatePictureWidgetsCounter() {
-            const elements = document.querySelectorAll('#trick_edit_videos > div');
-            const widgetsCounter = document.getElementById('picture-widgets-counter');
-            widgetsCounter.value = elements.length;
-        }
-
-        updatePictureWidgetsCounter();
-
-        pictureHandleDeleteBtn();
-
-    </script>
-
 {% endblock %}
 
-{# VIDEO #}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('edit-tricks') }}
+{% endblock %}
+
+{#
+VIDEO
+#}
 
 {% block _trick_edit_videos_entry_widget %}
 
@@ -158,10 +81,6 @@
                     class="ml-5 self-end bg-red-700 text-white px-3 py-2 rounded-md">X
             </button>
         </div>
-
-        {# {% if value.link is defined %} #}
-        {# {{ value.link }} #}
-        {# {% endif %} #}
 
     </div>
 {% endblock %}
@@ -184,14 +103,15 @@
 
 {% endblock %}
 
-
-{# PICTURE #}
+{#
+PICTURE
+#}
 
 {% block _trick_edit_pictures_entry_widget %}
 
     <div id="block_{{ id }}" class=" w-full md:w-1/2 px-0 md:px-5">
 
-        <div class="m-2 p-2 flex relative bg-gray-100 dark:bg-gray-800 rounded-xl shadow-xl ">
+        <div class="m-2 p-2 flex relative bg-gray-100 dark:bg-gray-900 rounded-xl shadow-xl ">
             <button type="button"
                     data-action="delete-picture"
                     data-target="block_{{ id }}"

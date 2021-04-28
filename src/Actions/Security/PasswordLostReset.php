@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Security;
 
-use App\Form\Security\AddCommentType;
+use App\Form\Comments\AddCommentType;
 use App\Repository\TokenHistoryRepository;
 use App\Repository\UserRepository;
 use App\Responders\ViewResponder;
