@@ -29,7 +29,7 @@ abstract class AbstractEntity
         return $this->id;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }

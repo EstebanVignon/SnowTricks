@@ -199,6 +199,7 @@ class Edit
                 $trick->setMainPicture($file);
             }
 
+            $trick->setUpdatedAt(new \DateTime("now"));
 
             $this->em->persist($newTrick);
             $this->em->flush();

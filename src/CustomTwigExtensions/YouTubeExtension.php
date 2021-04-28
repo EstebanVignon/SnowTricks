@@ -17,10 +17,19 @@ class YouTubeExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * Display YouTube ID for iframe generating : source www.youtube.com/watch?v=Q0gBzfe or Q0gBzfe
+     * @param $youtubeLink
+     * @return string
+     */
     public function convertYoutubeVideoLinkToVideoId($youtubeLink): string
     {
         $explode = explode("v=", $youtubeLink);
-        $result = explode("&", $explode[1]);
-        return $result[0];
+        if (isset($explode[1])) {
+            $result = explode("&", $explode[1]);
+            return $result[0];
+        }
+        $explode = explode("://", $youtubeLink);
+        return $explode[1];
     }
 }

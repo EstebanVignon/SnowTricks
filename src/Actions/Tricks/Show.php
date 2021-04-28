@@ -97,8 +97,9 @@ class Show
 
         $form = $this->formFactory->createBuilder(AddCommentType::class)->getForm()->handleRequest($request);
 
+
+        $currentUser = $this->security->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $currentUser = $this->security->getUser();
             $commentDTO = $form->getData();
 
             $comment = new Comment();
@@ -122,13 +123,14 @@ class Show
             $comments = $this->commentRepository->getCommentsWithFilters($trick, $commentsNumber, $currentCommentsNbr);
             return new JsonResponse([
                 'content' => $this->twig->render('trick/_comments.html.twig', [
+                    'currentUser' => $currentUser,
                     'comments' => $comments
                 ])
             ]);
         } else {
             $comments = $this->commentRepository->getCommentsWithFilters($trick, $commentsNumber, 0);
-
             return $responder('trick/single.html.twig', [
+                'currentUser' => $currentUser,
                 'form' => $form->createView(),
                 'trick' => $trick,
                 'comments' => $comments

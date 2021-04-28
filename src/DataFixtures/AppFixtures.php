@@ -75,6 +75,8 @@ class AppFixtures extends Fixture
             $categories[] = $cat;
         }
 
+        // TRICKS
+
         for ($i = 1; $i <= 18; $i++) {
             $trick = new Trick();
             $title = "Trick $i " . $factory->sentence(6);
@@ -99,26 +101,30 @@ class AppFixtures extends Fixture
                 $manager->persist($picture);
             }
 
-            $users = $manager->getUnitOfWork()->getScheduledEntityInsertions();
-            foreach ($users as $user) {
-                if (is_a($user, User::class)) {
-                    for ($c = 1; $c <= rand(0, 2); $c++) {
-                        $comment = new Comment();
-                        $comment->setContent(
-                            $user->getUsername() . ' ' .
-                            $trick->getTitle() . ' ' .
-                            $factory->realText(rand(10, 140))
-                        );
-                        $comment->setTrick($trick);
-                        $comment->setUser($user);
-                        $manager->persist($comment);
-                    }
-                }
-            }
-
             $manager->persist($trick);
         }
 
+        //COMMENTS
+
+        $users = [];
+        $tricks = [];
+        foreach ($manager->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
+            if ($entity instanceof User) {
+                $users[] = $entity;
+            }
+            if ($entity instanceof Trick) {
+                $tricks[] = $entity;
+            }
+        }
+        for ($c = 1; $c <= 200; $c++) {
+            $trick = array_rand($tricks);
+            $user = array_rand($users);
+            $comment = new Comment();
+            $comment->setContent($factory->realText(rand(10, 140)));
+            $comment->setTrick($tricks[$trick]);
+            $comment->setUser($users[$user]);
+            $manager->persist($comment);
+        }
 
         $manager->flush();
     }

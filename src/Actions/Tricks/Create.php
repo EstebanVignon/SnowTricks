@@ -108,6 +108,8 @@ class Create
                     $file
                 );
                 $trick->setMainPicture($file);
+            } else {
+                $trick->setMainPicture('default.jpg');
             }
 
             //Videos

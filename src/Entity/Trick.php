@@ -132,9 +132,6 @@ class Trick extends AbstractEntity
         return $this->updatedAt;
     }
 
-    /**
-     * @ORM\PreUpdate()
-     */
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTime('now');

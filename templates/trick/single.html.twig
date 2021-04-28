@@ -2,82 +2,90 @@
 
 {% block body %}
 
-    {% include 'shared/_flash.html.twig' %}
-
-    <h1 class="text-2xl mt-12 mx-auto text-center text-grey-800 dark:text-white">{{ trick.title }}</h1>
-
-    <div class="py-12 my-12 bg-white dark:bg-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <nav class="bg-gray-200 dark:bg-gray-900 dark:text-white max-w-3xl p-3 rounded w-full m-4">
-                <ol class="list-reset flex text-grey-dark">
-                    <li>
-                        <a href="{{ path('homepage') }}" class="text-blue font-bold">Accueil</a>
-                    </li>
-                    <li><span class="mx-2">/</span></li>
-                    <li>
-                        <a href="{{ path('trick_category', {'slug': trick.category.slug}) }}"
-                           class="text-blue font-bold">{{ trick.category.name }}</a>
-                    </li>
-                    <li><span class="mx-2">/</span></li>
-                    <li>{{ trick.title }}</li>
-
-                </ol>
-            </nav>
-
-            <div class="flex p-1 bg-white rounded">
-                {% include '_delete_edit_trick_icons.html.twig' %}
-            </div>
-
-            <img src="{{ asset('assets/uploads/tricks-main-picture/')~trick.mainPicture }}"
-                 alt="{{ trick.title }} Main Picture">
-
-            <div class="flex flex-wrap mt-12 justify-center align-top">
-                {% for picture in trick.pictures %}
-                    <img class="w-72 h-56 mx-5 object-cover block"
-                         src="{{ asset('assets/uploads/tricks-pictures/')~picture.fileName }}"
-                         alt="{{ trick.title }} Collection Picture">
-                {% endfor %}
-            </div>
-
-            <div class="flex mt-12 justify-center">
-                {% for video in trick.videos %}
-                    <iframe class="m-2"
-                            width="320"
-                            height="180"
-                            src="https://www.youtube.com/embed/{{ video.link|youtubeLinkToId }}"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
-                {% endfor %}
-            </div>
-
-
-            <div class="py-12 my-12 bg-white dark:bg-gray-700">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {{ form_start(form) }}
-                    {{ form_errors(form) }}
-                    <div class="md:w-1/2 w-full px-5">
-                        {{ form_row(form.content) }}
-                    </div>
-                    <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
-                            type="submit">Envoyer votre commentaire
-                    </button>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-
-
-            <div id="comments-container">
-                {{ include('trick/_comments.html.twig') }}
-            </div>
-            <button id="load-more-comments-btn"
-                    data-current-comments-nbr="0"
-                    class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
-                Voir Plus
-            </button>
+    <div class="flex relative justify-center items-center">
+        <img class="w-full h-screen/70 object-cover block"
+             src="{{ asset('assets/uploads/tricks-main-picture/')~trick.mainPicture }}"
+             alt="{{ trick.title }} Main Picture">
+        <h1 class="absolute text-shadow text-4xl mx-auto text-center text-gray-100">
+            {{ trick.title }}
+        </h1>
+        <div class="flex absolute top-5 right-5 p-1 bg-white rounded shadow-xl">
+            {% include '_delete_edit_trick_icons.html.twig' %}
         </div>
+        <div class="absolute bottom-0 w-full">
+            {% include 'shared/_flash.html.twig' %}
+        </div>
+    </div>
+
+    <div class="max-full mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <div class="flex flex-wrap mt-12 justify-center align-top">
+            {% for picture in trick.pictures %}
+                <img class="w-80 h-56 m-3 object-cover block"
+                     src="{{ asset('assets/uploads/tricks-pictures/')~picture.fileName }}"
+                     alt="{{ trick.title }} Collection Picture">
+            {% endfor %}
+
+            {% for video in trick.videos %}
+                <iframe class="m-2"
+                        width="400"
+                        height="225"
+                        src="https://www.youtube.com/embed/{{ video.link|youtubeLinkToId }}"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            {% endfor %}
+        </div>
+
+        <div class="max-w-7xl mx-auto rounded-2xl my-12">
+
+            <p class="text-xl mb-5 text-gray-800 dark:text-gray-100">{{ trick.description }}</p>
+
+            <div class="flex flex-wrap justify-center">
+                <span class="bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 px-2 py-1 m-2 rounded-xl">
+                    Créé le : {{ trick.createdAt|date("d/m/Y à G:i", "Europe/Paris") }}
+                </span>
+                {% if trick.updatedAt is not null and trick.updatedAt is not empty %}
+                    <span class="bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 px-2 py-1 m-2 rounded-xl">
+                        Mis à jour le : {{ trick.updatedAt|date("d/m/Y à G:i", "Europe/Paris") }}
+                    </span>
+                {% endif %}
+                <span class="bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 px-2 py-1 m-2 rounded-xl">
+                    {{ trick.category.name }}
+                </span>
+            </div>
+
+            <hr class="my-8 mx-auto hr-custom">
+
+            <div class="mx-auto px-4 mb-4">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="md:w-1/2 mx-auto w-full px-5">
+                    {{ form_row(form.content) }}
+                </div>
+                <button class="mt-3 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                        type="submit">Envoyer
+                </button>
+                {{ form_end(form) }}
+            </div>
+
+            <hr class="my-8 mx-auto hr-custom">
+
+            {% if comments|length > 0 %}
+                <div class="md:w-1/2 w-full mx-auto bg-white dark:bg-gray-700 rounded-xl shadow-xl p-5">
+                    <div id="comments-container">
+                        {{ include('trick/_comments.html.twig') }}
+                    </div>
+                    <button id="load-more-comments-btn"
+                            data-current-comments-nbr="0"
+                            class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
+                        Voir Plus
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+
     </div>
 
     <script>
@@ -110,7 +118,8 @@
                         const content = document.getElementById('comments-container');
                         content.innerHTML = content.innerHTML + data.content;
 
-                        if (data.content.length === 0) {
+                        console.log(data.content.length)
+                        if (data.content.length <= 1) {
                             btn.innerText = "Plus d'autres commentaires";
                             btn.style.pointerEvents = "none";
                         } else {
