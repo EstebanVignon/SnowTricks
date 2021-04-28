@@ -15,7 +15,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,14 +54,17 @@ class Edit
      * @var FlashBagInterface
      */
     private FlashBagInterface $flash;
+
     /**
      * @var ContainerBagInterface
      */
     private ContainerBagInterface $params;
+
     /**
      * @var Filesystem
      */
     private Filesystem $filesystem;
+
     /**
      * @var PictureRepository
      */

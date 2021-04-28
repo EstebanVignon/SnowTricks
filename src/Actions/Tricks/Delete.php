@@ -47,14 +47,17 @@ class Delete
      * @var FlashBagInterface
      */
     private FlashBagInterface $flash;
+
     /**
      * @var PicturesFilesystemHelper
      */
     private PicturesFilesystemHelper $picturesFilesystemHelper;
+
     /**
      * @var Filesystem
      */
     private Filesystem $filesystem;
+
     /**
      * @var ContainerBagInterface
      */

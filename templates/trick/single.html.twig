@@ -54,6 +54,21 @@
             </div>
 
 
+            <div class="py-12 my-12 bg-white dark:bg-gray-700">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="md:w-1/2 w-full px-5">
+                        {{ form_row(form.content) }}
+                    </div>
+                    <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                            type="submit">Envoyer votre commentaire
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+
             <div id="comments-container">
                 {{ include('trick/_comments.html.twig') }}
             </div>

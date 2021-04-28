@@ -44,6 +44,7 @@ class Create
      * @var FlashBagInterface
      */
     private FlashBagInterface $flash;
+
     /**
      * @var ContainerBagInterface
      */

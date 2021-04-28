@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Security;
 
-use App\Form\Security\PasswordLostResetType;
+use App\Form\Security\AddCommentType;
 use App\Repository\TokenHistoryRepository;
 use App\Repository\UserRepository;
 use App\Responders\ViewResponder;
@@ -83,7 +83,7 @@ class PasswordLostReset
         $tokenObj = $this->tokenHistoryRepository->findOneBy(['value' => $token]);
 
         if ($tokenObj !== null) {
-            $form = $this->formFactory->createBuilder(PasswordLostResetType::class)->getForm()->handleRequest($request);
+            $form = $this->formFactory->createBuilder(AddCommentType::class)->getForm()->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $user = $this->userRepository->findOneBy(['username' => $tokenObj->getUser()->getUsername()]);

@@ -10,14 +10,14 @@ use Twig\TwigFunction;
 
 class YouTubeExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('youtubeLinkToId', [$this, 'convertYoutubeVideoLinkToVideoId'])
         ];
     }
 
-    public function convertYoutubeVideoLinkToVideoId($youtubeLink)
+    public function convertYoutubeVideoLinkToVideoId($youtubeLink): string
     {
         $explode = explode("v=", $youtubeLink);
         $result = explode("&", $explode[1]);
