@@ -20,6 +20,12 @@ class User extends AbstractEntity implements UserInterface
 {
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Length(
+     *     min=6,
+     *     minMessage="Nom d'utilisateur trop court, minimum 6 caractères",
+     *     max=20,
+     *     maxMessage="Nom d'utilisateur trop long, maximum 20 caractères"
+     * )
      */
     private string $username;
 
@@ -31,6 +37,12 @@ class User extends AbstractEntity implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(
+     *     min=8,
+     *     minMessage="mot de passe trop court, minimum 8 caractères",
+     *     max=20,
+     *     maxMessage="Mot de passe trop long, max 20 caractères"
+     * )
      */
     private string $password;
 

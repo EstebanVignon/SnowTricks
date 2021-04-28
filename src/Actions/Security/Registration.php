@@ -83,7 +83,6 @@ class Registration
      */
     public function __invoke(ViewResponder $responder, Request $request)
     {
-
         if ($this->security->getUser()) {
             $this->flash->add('warning', 'Vous êtes déjà connecté');
             $url = $this->urlGenerator->generate('homepage');

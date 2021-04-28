@@ -41,10 +41,10 @@ class AppFixtures extends Fixture
         $factory = Factory::create('fr_FR');
 
         $activeUser = new User();
-        $hash = $this->encoder->encodePassword($activeUser, 'Password');
+        $hash = $this->encoder->encodePassword($activeUser, 'root');
 
-        $activeUser->setUsername('Esteban')
-            ->setEmail('vignon.esteban@gmail.com')
+        $activeUser->setUsername('root')
+            ->setEmail('root@root.com')
             ->setPassword($hash)
             ->setIsActive(true);
 
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
 
         for ($u = 0; $u < 10; $u++) {
             $user = new User();
-            $hash = $this->encoder->encodePassword($user, 'Password');
+            $hash = $this->encoder->encodePassword($user, 'root');
             $user->setUsername("User$u")
                 ->setEmail("usertest$u@gmail.com")
                 ->setPassword($hash);
@@ -82,7 +82,7 @@ class AppFixtures extends Fixture
             $title = "Trick $i " . $factory->sentence(6);
             $trick->setTitle($title)
                 ->setDescription($factory->sentence(20))
-                ->setMainPicture('default.jpg')
+                ->setMainPicture($trick::DEFAULT_IMAGE)
                 ->setCategory($categories[random_int(0, 2)]);
 
             for ($v = 1; $v <= 3; $v++) {
@@ -95,7 +95,7 @@ class AppFixtures extends Fixture
 
             for ($p = 1; $p <= 3; $p++) {
                 $picture = new Picture();
-                $picture->setFileName('default.jpg');
+                $picture->setFileName($picture::DEFAULT_IMAGE);
                 $picture->setTrick($trick);
 
                 $manager->persist($picture);

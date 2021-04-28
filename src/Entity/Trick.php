@@ -22,6 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Trick extends AbstractEntity
 {
+    public const DEFAULT_IMAGE = 'default.jpg';
+
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(

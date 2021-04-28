@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class Delete
 {
@@ -60,6 +61,10 @@ class Delete
      * @var ContainerBagInterface
      */
     private ContainerBagInterface $params;
+    /**
+     * @var Security
+     */
+    private Security $security;
 
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -69,7 +74,8 @@ class Delete
         FlashBagInterface $flash,
         PicturesFilesystemHelper $picturesFilesystemHelper,
         Filesystem $filesystem,
-        ContainerBagInterface $params
+        ContainerBagInterface $params,
+        Security $security
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
@@ -79,6 +85,7 @@ class Delete
         $this->picturesFilesystemHelper = $picturesFilesystemHelper;
         $this->filesystem = $filesystem;
         $this->params = $params;
+        $this->security = $security;
     }
 
     /**
@@ -90,6 +97,12 @@ class Delete
      */
     public function __invoke(string $slug, ViewResponder $responder, Request $request): Response
     {
+        if (!$this->security->getUser()) {
+            $this->flash->add('warning', "Connectez-vous pour supprimer ce trick");
+            $url = $this->urlGenerator->generate('security_login');
+            return new RedirectResponse($url);
+        }
+
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
 
         if (!$trick) {
@@ -105,7 +118,7 @@ class Delete
                 );
             }
             //Main picture
-            if ($trick->getMainPicture() !== "default.jpg") {
+            if ($trick->getMainPicture() !== $trick::DEFAULT_IMAGE) {
                 $this->filesystem->remove(
                     $this->params->get("main_picture_directory") . '/' . $trick->getMainPicture()
                 );

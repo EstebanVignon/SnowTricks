@@ -10,10 +10,10 @@ class PasswordLostResetDTO
 {
     /**
      * @Assert\Length(
-     *     min=7,
-     *     minMessage="Mot de passe trop court",
-     *     max=32,
-     *     maxMessage="Mot de passe trop long"
+     *     min=8,
+     *     minMessage="mot de passe trop court, minimum 8 caractères",
+     *     max=20,
+     *     maxMessage="Mot de passe trop long, max 20 caractères"
      * )
      */
     public ?string $password;

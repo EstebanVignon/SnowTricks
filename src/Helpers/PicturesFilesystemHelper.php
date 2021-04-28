@@ -49,7 +49,7 @@ class PicturesFilesystemHelper
     public function deleteTrick(string $pictureId, string $folderParamName)
     {
         $picture = $this->pictureRepository->findOneBy(['id' => $pictureId]);
-        if ($picture->getFileName() !== "default.jpg") {
+        if ($picture->getFileName() !== $picture::DEFAULT_IMAGE) {
             $this->filesystem->remove(
                 $this->params->get($folderParamName) . '/' . $picture->getFileName()
             );

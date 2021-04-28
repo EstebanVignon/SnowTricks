@@ -9,3 +9,9 @@ UML diagrams are inside _UML folder in de root
 -  Using the CSS Tailwind framework
 -  Do not use the AbstractController
   
+## How to install ?
+- Clone project
+- Set in the .env file your database configuration and SMTP configuration if needed
+- Run all doctrine migrations
+- Run fixtures (symfony console d:f:l)
+- There will already be a valid user : username : root / password : root

@@ -27,7 +27,7 @@ class TrickPictureType extends AbstractType
                             'image/png',
                             'image/jpeg'
                         ],
-                        'mimeTypesMessage' => 'Doit être un .png ou .jpg',
+                        'mimeTypesMessage' => 'Doit être un .png ou .jpg'
                     ])
                 ],
             ]);

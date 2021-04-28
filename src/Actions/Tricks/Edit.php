@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class Edit
 {
@@ -74,6 +75,10 @@ class Edit
      * @var PicturesFilesystemHelper
      */
     private PicturesFilesystemHelper $picturesFilesystemHelper;
+    /**
+     * @var Security
+     */
+    private Security $security;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -85,7 +90,8 @@ class Edit
         ContainerBagInterface $params,
         Filesystem $filesystem,
         PictureRepository $pictureRepository,
-        PicturesFilesystemHelper $picturesFilesystemHelper
+        PicturesFilesystemHelper $picturesFilesystemHelper,
+        Security $security
     ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
@@ -97,6 +103,7 @@ class Edit
         $this->filesystem = $filesystem;
         $this->pictureRepository = $pictureRepository;
         $this->picturesFilesystemHelper = $picturesFilesystemHelper;
+        $this->security = $security;
     }
 
     /**
@@ -108,6 +115,12 @@ class Edit
      */
     public function __invoke(string $slug, ViewResponder $responder, Request $request): Response
     {
+        if (!$this->security->getUser()) {
+            $this->flash->add('warning', "Connectez-vous pour éditer ce trick");
+            $url = $this->urlGenerator->generate('security_login');
+            return new RedirectResponse($url);
+        }
+
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
 
         $oldPictures = array_map(function (Picture $picture) {
@@ -187,7 +200,7 @@ class Edit
 
             $mainPicture = $form->get('mainPicture')->getData();
             if ($mainPicture) {
-                if ($trick->getMainPicture() !== "default.jpg") {
+                if ($trick->getMainPicture() !== $trick::DEFAULT_IMAGE) {
                     $oldFile = $this->params->get('main_picture_directory') . '/' . $trick->getMainPicture();
                     $this->filesystem->remove([$oldFile]);
                 }

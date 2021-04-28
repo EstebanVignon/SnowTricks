@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class Create
 {
@@ -50,13 +51,19 @@ class Create
      */
     private ContainerBagInterface $params;
 
+    /**
+     * @var Security
+     */
+    private Security $security;
+
     public function __construct(
         FormFactoryInterface $formFactory,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash,
-        ContainerBagInterface $params
+        ContainerBagInterface $params,
+        Security $security
     ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
@@ -64,6 +71,7 @@ class Create
         $this->urlGenerator = $urlGenerator;
         $this->flash = $flash;
         $this->params = $params;
+        $this->security = $security;
     }
 
     /**
@@ -74,6 +82,12 @@ class Create
      */
     public function __invoke(ViewResponder $responder, Request $request)
     {
+        if (!$this->security->getUser()) {
+            $this->flash->add('warning', "Connectez-vous pour créer un trick");
+            $url = $this->urlGenerator->generate('security_login');
+            return new RedirectResponse($url);
+        }
+
         $form = $this->formFactory->createBuilder(TrickCreateType::class)->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,7 +123,7 @@ class Create
                 );
                 $trick->setMainPicture($file);
             } else {
-                $trick->setMainPicture('default.jpg');
+                $trick->setMainPicture($trick::DEFAULT_IMAGE);
             }
 
             //Videos

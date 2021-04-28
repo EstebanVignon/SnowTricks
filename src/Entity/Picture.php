@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Picture extends AbstractEntity
 {
+    public const DEFAULT_IMAGE = 'default.jpg';
+
     /**
      * @ORM\Column(type="string", length=255)
      */

@@ -17,10 +17,12 @@
     </div>
 
     <div class="mt-20 pb-28 max-w-screen-xl mx-auto px-8">
-        <a href="{{ path('create_trick') }}"
-           class="block bg-gray-800 dark:bg-gray-100 rounded-xl shadow-xl text-gray-100 dark:text-gray-800 w-32 px-2 py-2 mb-6 text-center">
-            Créer un trick
-        </a>
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('create_trick') }}"
+               class="block bg-gray-800 dark:bg-gray-100 rounded-xl shadow-xl text-gray-100 dark:text-gray-800 w-32 px-2 py-2 mb-6 text-center">
+                Créer un trick
+            </a>
+        {% endif %}
         <div id="tricks-container"
              class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:grid-cols-4">
             {% include '_tricks.html.twig' %}
@@ -38,3 +40,4 @@
     {{ parent() }}
     {{ encore_entry_script_tags('homepage') }}
 {% endblock %}
+
