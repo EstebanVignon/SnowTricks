@@ -53,7 +53,64 @@
                 {% endfor %}
             </div>
 
+
+            <div id="comments-container">
+                {{ include('trick/_comments.html.twig') }}
+            </div>
+            <button id="load-more-comments-btn"
+                    data-current-comments-nbr="0"
+                    class="block mt-12 mx-auto center px-3 py-2 bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 text-xl rounded">
+                Voir Plus
+            </button>
         </div>
     </div>
+
+    <script>
+        window.onload = function () {
+            // Init data btn data attributes
+            const btn = document.getElementById('load-more-comments-btn');
+            const initialCommentsNbr = document.querySelectorAll("#comments-container > div").length;
+            btn.dataset.currentCommentsNbr = initialCommentsNbr.toString();
+
+            btn.addEventListener('click', function () {
+                // Build query string
+                let params = new URLSearchParams();
+                params.append('currentComments', btn.dataset.currentCommentsNbr);
+
+                // Get Active URL
+                const url = new URL(window.location.href);
+
+                // load text
+                btn.innerText = "chargement..."
+                btn.style.pointerEvents = "none";
+
+                //Ajax request
+                fetch(url.pathname + "?" + params.toString() + "&ajax=1", {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const content = document.getElementById('comments-container');
+                        content.innerHTML = content.innerHTML + data.content;
+
+                        if (data.content.length === 0) {
+                            btn.innerText = "Plus d'autres commentaires";
+                            btn.style.pointerEvents = "none";
+                        } else {
+                            btn.innerText = "Voir Plus";
+                            btn.style.pointerEvents = "auto";
+                        }
+                    })
+                    .catch(e => alert(e));
+
+                // Update btn data attributes
+                let newCommentsNbr = initialCommentsNbr + parseInt(btn.dataset.currentCommentsNbr);
+                btn.dataset.currentCommentsNbr = newCommentsNbr.toString();
+            });
+        }
+
+    </script>
 
 {% endblock %}

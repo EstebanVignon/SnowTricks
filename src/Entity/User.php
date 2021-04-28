@@ -55,11 +55,17 @@ class User extends AbstractEntity implements UserInterface
      */
     private ?Collection $tokensHistory;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+     */
+    private ?Collection $comments;
+
     public function __construct()
     {
         parent::__construct();
         $this->tokensHistory = new ArrayCollection();
         $this->setIsActive(false);
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -197,5 +203,35 @@ class User extends AbstractEntity implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

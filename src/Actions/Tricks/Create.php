@@ -56,8 +56,7 @@ class Create
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flash,
         ContainerBagInterface $params
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;

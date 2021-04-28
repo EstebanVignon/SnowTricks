@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Picture;
 use App\Entity\TokenHistory;
 use App\Entity\Trick;
@@ -96,6 +97,23 @@ class AppFixtures extends Fixture
                 $picture->setTrick($trick);
 
                 $manager->persist($picture);
+            }
+
+            $users = $manager->getUnitOfWork()->getScheduledEntityInsertions();
+            foreach ($users as $user) {
+                if (is_a($user, User::class)) {
+                    for ($c = 1; $c <= rand(0, 2); $c++) {
+                        $comment = new Comment();
+                        $comment->setContent(
+                            $user->getUsername() . ' ' .
+                            $trick->getTitle() . ' ' .
+                            $factory->realText(rand(10, 140))
+                        );
+                        $comment->setTrick($trick);
+                        $comment->setUser($user);
+                        $manager->persist($comment);
+                    }
+                }
             }
 
             $manager->persist($trick);

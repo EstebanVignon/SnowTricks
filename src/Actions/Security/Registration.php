@@ -67,8 +67,7 @@ class Registration
         UserPasswordEncoderInterface $encoder,
         MailerInterface $mailer,
         Security $security
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->flash = $flash;

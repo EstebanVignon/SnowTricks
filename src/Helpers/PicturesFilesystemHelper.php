@@ -40,8 +40,7 @@ class PicturesFilesystemHelper
         PictureRepository $pictureRepository,
         ContainerBagInterface $params,
         EntityManagerInterface $em
-    )
-    {
+    ) {
         $this->filesystem = $filesystem;
         $this->pictureRepository = $pictureRepository;
         $this->params = $params;

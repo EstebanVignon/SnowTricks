@@ -84,8 +84,7 @@ class Edit
         Filesystem $filesystem,
         PictureRepository $pictureRepository,
         PicturesFilesystemHelper $picturesFilesystemHelper
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;

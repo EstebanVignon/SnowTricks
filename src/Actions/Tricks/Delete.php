@@ -69,8 +69,7 @@ class Delete
         PicturesFilesystemHelper $picturesFilesystemHelper,
         Filesystem $filesystem,
         ContainerBagInterface $params
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
         $this->trickRepository = $trickRepository;
