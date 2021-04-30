@@ -54,7 +54,7 @@ class Category extends AbstractEntity
 
     public function setSlug(string $slug): self
     {
-        $this->name = $slug;
+        $this->slug = $slug;
 
         return $this;
     }
@@ -85,17 +85,6 @@ class Category extends AbstractEntity
                 $trick->setCategory(null);
             }
         }
-
-        return $this;
-    }
-
-    // CUSTOM
-
-    public function create(string $name): self
-    {
-        $this->name = $name;
-        $slugger = new Slugify();
-        $this->slug = $slugger->slugify($this->getName());
 
         return $this;
     }
