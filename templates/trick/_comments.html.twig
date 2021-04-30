@@ -8,15 +8,24 @@
         {% set username = comment.user.username %}
     {% endif %}
 
-    <div class="{{ bgColor }} rounded-xl my-3 p-2 block w-full">
-        <p class="text-left top:0 left:0 text-gray-800 dark:text-gray-100 text-md italic">
-            Le : {{ comment.createdAt|date("d/m/Y à G:i", "Europe/Paris") }}<br>
-            De : {{ username }}
-        </p>
-        <p class="text-left mt-3 text-gray-800 dark:text-gray-100 text-md">
-            {{ comment.content|nl2br }}
-        </p>
+    <div class="flex items-center">
+        <div>
+            {% if comment.user.avatar is empty %}
+                <img class="w-28 pr-3" src="{{ asset('assets/uploads/user/default_avatar.jpg') }}" alt="Default Avatar">
+            {% else %}
+                <img class="w-28 pr-3" src="{{ asset('assets/uploads/user/')~comment.user.avatar }}"
+                     alt="Default Avatar">
+            {% endif %}
+        </div>
+        <div class="{{ bgColor }} rounded-xl my-3 p-2 block w-full">
+            <p class="text-left top:0 left:0 text-gray-800 dark:text-gray-100 text-md italic">
+                Le : {{ comment.createdAt|date("d/m/Y à G:i", "Europe/Paris") }}<br>
+                De : {{ username }}
+            </p>
+            <p class="text-left mt-3 text-gray-800 dark:text-gray-100 text-md">
+                {{ comment.content|nl2br }}
+            </p>
+        </div>
     </div>
 
 {% endfor %}
-

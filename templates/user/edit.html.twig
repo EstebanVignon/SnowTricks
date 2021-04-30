@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block title %}Edition de votre profil{% endblock %}
+
+{% block body %}
+
+    {% include 'shared/_flash.html.twig' %}
+
+    <div class="max-w-screen-xl mx-auto mb-24 px-4 sm:px-6 lg:px-8 min-h-screen/90">
+
+        <h1 class="text-2xl my-12 mx-auto text-center text-grey-800 dark:text-white">
+            Editer votre profil
+        </h1>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="flex justify-center flex-col items-center">
+            {{ form_row(form.avatar) }}
+        </div>
+
+        <button class="mt-8 text-white dark:text-black bg-gray-800 dark:bg-gray-300 rounded-lg text-lg px-2 py-1"
+                type="submit">Sauvegarder
+        </button>
+
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

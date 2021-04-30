@@ -6,6 +6,7 @@
 parameters:
     main_picture_directory: '%kernel.project_dir%/public/assets/uploads/tricks-main-picture'
     tricks_pictures_directory: '%kernel.project_dir%/public/assets/uploads/tricks-pictures'
+    avatar_directory: '%kernel.project_dir%/public/assets/uploads/user'
 
 services:
     # default configuration for services in *this* file

@@ -72,6 +72,11 @@ class User extends AbstractEntity implements UserInterface
      */
     private ?Collection $tricks;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
     public function __construct()
     {
         parent::__construct();
@@ -262,6 +267,18 @@ class User extends AbstractEntity implements UserInterface
                 $trick->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

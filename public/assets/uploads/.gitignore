@@ -6,3 +6,6 @@ tricks-main-picture/*
 tricks-pictures/*
 !tricks-pictures/default.jpg
 !tricks-pictures/default*.jpg
+
+user/*
+!user/default_avatar.jpg
