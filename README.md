@@ -6,6 +6,14 @@ UML diagrams are inside _UML folder in de root
 
 All pictures are downloaded from "Envato Elements" or "Twenty20" and a license is applied.
 
+## Development environment
+- PHP 7.4
+- Laragon 4.0.16
+- MySql 5.7
+- Mail catcher : mailtrap.io
+- Symfony 5.2.6
+- Tailwind 2.0.3
+
 ## Personal constraints on the project
 - Using design pattern in ADR instead of MVC
 - Using the CSS Tailwind framework rather than Boostrap
