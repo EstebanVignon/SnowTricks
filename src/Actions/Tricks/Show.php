@@ -126,14 +126,13 @@ class Show
                     'comments' => $comments
                 ])
             ]);
-        } else {
-            $comments = $this->commentRepository->getCommentsWithFilters($trick, $commentsNumber, 0);
-            return $responder('trick/single.html.twig', [
-                'currentUser' => $currentUser,
-                'form' => $form->createView(),
-                'trick' => $trick,
-                'comments' => $comments
-            ]);
         }
+        $comments = $this->commentRepository->getCommentsWithFilters($trick, $commentsNumber, 0);
+        return $responder('trick/single.html.twig', [
+            'currentUser' => $currentUser,
+            'form' => $form->createView(),
+            'trick' => $trick,
+            'comments' => $comments
+        ]);
     }
 }

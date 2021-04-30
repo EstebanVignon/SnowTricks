@@ -67,10 +67,9 @@ class RegistrationTokenValidation
             $this->flash->add('success', 'Votre compte à bien été activé !');
             $url = $this->urlGenerator->generate('security_login');
             return new RedirectResponse($url);
-        } else {
-            $this->flash->add('fail', 'Token invalide');
-            $url = $this->urlGenerator->generate('security_login');
-            return new RedirectResponse($url);
         }
+        $this->flash->add('fail', 'Token invalide');
+        $url = $this->urlGenerator->generate('security_login');
+        return new RedirectResponse($url);
     }
 }

@@ -103,10 +103,9 @@ class PasswordLostReset
             return $responder('security/password_lost_reset.html.twig', [
                 'form' => $form->createView()
             ]);
-        } else {
-            $this->flash->add('fail', 'Token de reinitalisation de mot de passe invalide');
-            $url = $this->urlGenerator->generate('homepage');
-            return new RedirectResponse($url);
         }
+        $this->flash->add('fail', 'Token de reinitalisation de mot de passe invalide');
+        $url = $this->urlGenerator->generate('homepage');
+        return new RedirectResponse($url);
     }
 }

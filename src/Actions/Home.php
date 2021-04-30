@@ -49,9 +49,8 @@ final class Home
                     'tricks' => $tricks
                 ])
             ]);
-        } else {
-            $tricks = $this->repository->getTricksWithFilters($tricksNumber, 0);
-            return $responder('homepage.html.Twig', ['tricks' => $tricks]);
         }
+        $tricks = $this->repository->getTricksWithFilters($tricksNumber, 0);
+        return $responder('homepage.html.Twig', ['tricks' => $tricks]);
     }
 }

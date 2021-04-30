@@ -135,10 +135,9 @@ class Delete
             $this->flash->add('success', 'Le trick a bien été supprimé');
             $url = $this->urlGenerator->generate('homepage');
             return new RedirectResponse($url);
-        } else {
-            return $responder('trick/delete.html.twig', [
-                'trick' => $trick
-            ]);
         }
+        return $responder('trick/delete.html.twig', [
+            'trick' => $trick
+        ]);
     }
 }
