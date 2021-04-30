@@ -1,2 +1,2 @@
-import './all-pages/darkmode.js'
-import './all-pages/menu.js'
+import './all-pages/darkmode.js';
+import './all-pages/menu.js';

@@ -1,1 +1,1 @@
-import './homepage/ajax-load-more-tricks.js'
+import './homepage/ajax-load-more-tricks.js';

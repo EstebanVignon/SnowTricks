@@ -1,2 +1,2 @@
-import './tricks/create-form-collection-pictures'
-import './tricks/create-form-collection-videos'
+import './tricks/create-form-collection-pictures.js';
+import './tricks/create-form-collection-videos.js';

@@ -1,6 +1,7 @@
 tricks-main-picture/*
 !tricks-main-picture/default.jpg
 !tricks-main-picture/default*.jpg
+!tricks-main-picture/test-picture-*.jpg
 
 tricks-pictures/*
 !tricks-pictures/default.jpg

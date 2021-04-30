@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Snowtricks | Trick {{ trick.title }}{% endblock %}
+
 {% block body %}
 
     <div class="flex relative justify-center items-center">
@@ -46,6 +48,9 @@
 
             <div class="flex flex-wrap justify-center">
                 <span class="bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 px-2 py-1 m-2 rounded-xl">
+                    Dernière modification par : {{ trick.user.username }}
+                </span>
+                <span class="bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-800 px-2 py-1 m-2 rounded-xl">
                     Créé le : {{ trick.createdAt|date("d/m/Y à G:i", "Europe/Paris") }}
                 </span>
                 {% if trick.updatedAt is not null and trick.updatedAt is not empty %}
@@ -76,7 +81,6 @@
                 <h2 class="text-center text-red-600 text-2xl">Connectez-vous pour déposer un commentaire</h2>
             {% endif %}
 
-
             <hr class="my-8 mx-auto hr-custom">
 
             {% if comments|length > 0 %}
@@ -95,53 +99,9 @@
 
     </div>
 
-    <script>
-        window.onload = function () {
-            // Init data btn data attributes
-            const btn = document.getElementById('load-more-comments-btn');
-            const initialCommentsNbr = document.querySelectorAll("#comments-container > div").length;
-            btn.dataset.currentCommentsNbr = initialCommentsNbr.toString();
+{% endblock %}
 
-            btn.addEventListener('click', function () {
-                // Build query string
-                let params = new URLSearchParams();
-                params.append('currentComments', btn.dataset.currentCommentsNbr);
-
-                // Get Active URL
-                const url = new URL(window.location.href);
-
-                // load text
-                btn.innerText = "chargement..."
-                btn.style.pointerEvents = "none";
-
-                //Ajax request
-                fetch(url.pathname + "?" + params.toString() + "&ajax=1", {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        const content = document.getElementById('comments-container');
-                        content.innerHTML = content.innerHTML + data.content;
-
-                        console.log(data.content.length)
-                        if (data.content.length <= 1) {
-                            btn.innerText = "Plus d'autres commentaires";
-                            btn.style.pointerEvents = "none";
-                        } else {
-                            btn.innerText = "Voir Plus";
-                            btn.style.pointerEvents = "auto";
-                        }
-                    })
-                    .catch(e => alert(e));
-
-                // Update btn data attributes
-                let newCommentsNbr = initialCommentsNbr + parseInt(btn.dataset.currentCommentsNbr);
-                btn.dataset.currentCommentsNbr = newCommentsNbr.toString();
-            });
-        }
-
-    </script>
-
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('single-trick') }}
 {% endblock %}

@@ -147,13 +147,6 @@ class Edit
             $idToAdd = array_diff($picturesArray, $oldPictures);
             $idToUpdate = array_intersect($oldPictures, $picturesArray);
 
-//            dump('all', $picturesArray);
-//            dump('delete', $idToDelete);
-//            dump('add', $idToAdd);
-//            dump('update', $idToUpdate);
-//
-//            exit();
-
             //Delete pictures
             if ($idToDelete) {
                 foreach ($idToDelete as $id) {
@@ -213,6 +206,8 @@ class Edit
             }
 
             $trick->setUpdatedAt(new \DateTime("now"));
+
+            $newTrick->setUser($this->security->getUser());
 
             $this->em->persist($newTrick);
             $this->em->flush();

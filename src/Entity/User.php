@@ -67,12 +67,18 @@ class User extends AbstractEntity implements UserInterface
      */
     private ?Collection $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
+     */
+    private ?Collection $tricks;
+
     public function __construct()
     {
         parent::__construct();
         $this->tokensHistory = new ArrayCollection();
-        $this->setIsActive(false);
         $this->comments = new ArrayCollection();
+        $this->tricks = new ArrayCollection();
+        $this->setIsActive(false);
     }
 
     /**
@@ -224,6 +230,36 @@ class User extends AbstractEntity implements UserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks[] = $trick;
+            $trick->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->removeElement($trick)) {
+            // set the owning side to null (unless already changed)
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
             }
         }
 

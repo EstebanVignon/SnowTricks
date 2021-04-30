@@ -28,6 +28,7 @@ Encore
     .addEntry('homepage', './assets/js/homepage.js')
     .addEntry('edit-tricks', './assets/js/tricks-edit.js')
     .addEntry('create-tricks', './assets/js/tricks-create.js')
+    .addEntry('single-trick', './assets/js/single.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

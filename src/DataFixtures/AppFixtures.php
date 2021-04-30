@@ -153,7 +153,8 @@ class AppFixtures extends Fixture
                 $trick->setTitle($trickName)
                     ->setDescription($trickArray["desc"])
                     ->setMainPicture("test-picture-" . $pictureCounter . '.jpg')
-                    ->setCategory($cat);
+                    ->setCategory($cat)
+                    ->setUser($activeUser);
                 $pictureCounter++;
 
                 // VIDEOS

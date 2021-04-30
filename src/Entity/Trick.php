@@ -80,6 +80,12 @@ class Trick extends AbstractEntity
      */
     private ?Collection $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?User $user;
+
     public function __construct()
     {
         parent::__construct();
@@ -251,6 +257,18 @@ class Trick extends AbstractEntity
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

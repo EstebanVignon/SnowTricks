@@ -63,12 +63,15 @@
         <div class="px-2 pt-2 pb-3 space-y-1">
             <a href="{{ menu1Link }}"
                class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu1 }}</a>
-            <a href="{{ menu2Link }}"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu2 }}</a>
-            <a href="{{ menu3Link }}"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu3 }}</a>
-            <a href="{{ menu4Link }}"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu4 }}</a>
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ menu4Link }}"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu4 }}</a>
+            {% else %}
+                <a href="{{ menu2Link }}"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu2 }}</a>
+                <a href="{{ menu3Link }}"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{{ menu3 }}</a>
+            {% endif %}
         </div>
     </div>
 

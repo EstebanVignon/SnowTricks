@@ -131,6 +131,8 @@ class Create
                 $this->em->persist($video);
             }
 
+            $trick->setUser($this->security->getUser());
+
             //Persist & Flush
             $this->em->persist($trick);
             $this->em->flush();
