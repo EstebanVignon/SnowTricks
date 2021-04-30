@@ -92,6 +92,5 @@ if (Encore.isProduction()) {
         }
     }));
 }
-;
 
 module.exports = Encore.getWebpackConfig();

@@ -26,8 +26,6 @@ window.onload = function () {
             .then(data => {
                 const content = document.getElementById('comments-container');
                 content.innerHTML = content.innerHTML + data.content;
-
-                console.log(data.content.length)
                 if (data.content.length <= 1) {
                     btn.innerText = "Plus d'autres commentaires";
                     btn.style.pointerEvents = "none";

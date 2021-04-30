@@ -42,7 +42,7 @@ All pictures are downloaded from "Envato Elements" or "Twenty20" and a license i
 ```
     php bin/console doctrine:migrations:migrate
 ```
-8. Install fixtures to have a mock data demo:
+8. Install fixtures to have a mock data demo - DEMO USER : username & password = root
 ```
     php bin/console doctrine:fixtures:load
 ```
